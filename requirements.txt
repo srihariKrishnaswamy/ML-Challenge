@@ -52,3 +52,6 @@ setuptools>=65.5.1 # Snyk vulnerability fix
 #others
 norfair
 yolov5
+norfair[video]
+pillow
+tk

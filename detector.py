@@ -249,11 +249,11 @@ if __name__ == "__main__":
                     # First time this object has been identified, so we save it.
                     track_id_to_data[obj.id] = OrganismDetection(obj.id, obj.label)
                 track_id_to_data[obj.id].add_detection(i)
-
+            # SQUARE BRACKETS REMOVED
             if args.show_classes:
-                norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=[(0, 255, 255)], border_width=1, draw_labels=True)
+                norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=(0, 255, 255), border_width=1, draw_labels=True)
             else:
-                norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=[(0, 255, 255)], border_width=1)
+                norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=(0, 255, 255), border_width=1)
             frame = paths_drawer.draw(frame, tracked_objects)
             video.write(frame)
 
@@ -287,8 +287,10 @@ if __name__ == "__main__":
             for organism_detection in track_id_to_data.values():
                 # Write out each tracked object as its own row.
                 # classification, starting frame, ending frame
-                print(organism_detection.get_first_last_frame()) # DEBUG
-                first_frame, last_frame = organism_detection.get_first_last_frame()
+                # print(organism_detection.get_first_last_frame()) # DEBUG
+                # first_frame, last_frame = organism_detection.get_first_last_frame()
+                first_frame = organism_detection.get_first_last_frame()[0]
+                last_frame = organism_detection.get_first_last_frame()[1]
                 writer.writerow({
                     'src_video': video_filename,
                     'classification': organism_detection.classification,
