@@ -17,7 +17,8 @@ import yolov5
 max_distance_between_points: int = 30
 PREVIEW_WINDOW_NAME = "image"
 classifications: List[str] = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish',
-                              'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology']
+                              'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology',
+                              'chordate']
 
 class OrganismDetection:
     "Data class for organism detections."
@@ -286,6 +287,7 @@ if __name__ == "__main__":
             for organism_detection in track_id_to_data.values():
                 # Write out each tracked object as its own row.
                 # classification, starting frame, ending frame
+                print(organism_detection.get_first_last_frame()) # DEBUG
                 first_frame, last_frame = organism_detection.get_first_last_frame()
                 writer.writerow({
                     'src_video': video_filename,
