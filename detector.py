@@ -17,7 +17,7 @@ import yolov5
 max_distance_between_points: int = 30
 PREVIEW_WINDOW_NAME = "image"
 classifications: List[str] = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish',
-                              'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology',]
+                              'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology']
 
 class OrganismDetection:
     "Data class for organism detections."
@@ -56,7 +56,7 @@ class YOLO:
         iou_threshold: float = 0.45,
         image_size: int = 720,
         classes: Optional[List[int]] = None
-    ) -> torch.Tensor:
+    ) -> torch.tensor: #CHANGE: lowercase Tensor
 
         self.model.conf = conf_threshold
         self.model.iou = iou_threshold
@@ -88,7 +88,7 @@ def format_seconds(seconds: int) -> str:
 
 def yolo_detections_to_norfair_detections(
     yolo_detections: torch.Tensor,
-    track_points: str = 'bbox'  # bbox or centroid
+    track_points: str = "bbox"  # bbox or centroid
 ) -> List[norfair.Detection]:
     """Converts detections_as_xywh to norfair detections.
     Label is the classification of the detection.
@@ -250,9 +250,9 @@ if __name__ == "__main__":
                 track_id_to_data[obj.id].add_detection(i)
             # SQUARE BRACKETS REMOVED
             if args.show_classes:
-                norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=(0, 255, 255), border_width=1, draw_labels=True)
+                norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=[0, 255, 255], border_width=1, draw_labels=True)
             else:
-                norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=(0, 255, 255), border_width=1)
+                norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=[0, 255, 255], border_width=1)
             frame = paths_drawer.draw(frame, tracked_objects)
             video.write(frame)
 
