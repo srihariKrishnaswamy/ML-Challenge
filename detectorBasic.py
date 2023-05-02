@@ -1,5 +1,5 @@
 import argparse
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict
 
 import numpy as np
 import torch
@@ -12,6 +12,22 @@ DISTANCE_THRESHOLD_BBOX: float = 0.7
 DISTANCE_THRESHOLD_CENTROID: int = 30
 MAX_DISTANCE: int = 10000
 
+classifications: List[str] = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish',
+                              'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology']
+
+class OrganismDetection:
+    def __init__(self, num_id:int, classification:str) -> None:
+        self.num_id: int = num_id
+        self.classification: str = classification
+        self.frames: List[int] = []
+    
+    def add_detection(self, frame:int):
+        "Registers a detection, including the frame of appearance and confidence level."
+        self.frames.append(frame)
+
+    def get_first_last_frame(self) -> Tuple[int, int]:
+        "Returns the first and last frame of appearance as a tuple."
+        return (self.frames[0], self.frames[len(self.frames) - 1])    
 
 class YOLO:
     def __init__(self, model_name: str, device: Optional[str] = None):
@@ -42,10 +58,12 @@ class YOLO:
         detections = self.model(img, size=image_size)
         return detections
 
+def euclidean_distance(detection, tracked_object):
+    """Returns euclidean distance between two points."""
+    return np.linalg.norm(detection.points - tracked_object.estimate)
 
 def center(points):
     return [np.mean(np.array(points), axis=0)]
-
 
 def yolo_detections_to_norfair_detections(
     yolo_detections: torch.tensor, track_points: str = "bbox"  # bbox or centroid
@@ -76,6 +94,7 @@ def yolo_detections_to_norfair_detections(
                     [detection_as_xyxy[2].item(), detection_as_xyxy[3].item()],
                 ]
             )
+            #HAD LABEL FIELD HERE
             scores = np.array(
                 [detection_as_xyxy[4].item(), detection_as_xyxy[4].item()]
             )
@@ -87,74 +106,77 @@ def yolo_detections_to_norfair_detections(
 
     return norfair_detections
 
-
-parser = argparse.ArgumentParser(description="Track objects in a video.")
-parser.add_argument("files", type=str, nargs="+", help="Video files to process")
-parser.add_argument(
-    "--model-name", type=str, default="iterations/seventh", help="YOLOv5 model name"
-)
-parser.add_argument(
-    "--img-size", type=int, default="720", help="YOLOv5 inference size (pixels)"
-)
-parser.add_argument(
-    "--conf-threshold",
-    type=float,
-    default="0.25",
-    help="YOLOv5 object confidence threshold",
-)
-parser.add_argument(
-    "--iou-threshold", type=float, default="0.45", help="YOLOv5 IOU threshold for NMS"
-)
-parser.add_argument(
-    "--classes",
-    nargs="+",
-    type=int,
-    help="Filter by class: --classes 0, or --classes 0 2 3",
-)
-parser.add_argument(
-    "--device", type=str, default=None, help="Inference device: 'cpu' or 'cuda'"
-)
-parser.add_argument(
-    "--track-points",
-    type=str,
-    default="bbox",
-    help="Track points: 'centroid' or 'bbox'",
-)
-args = parser.parse_args()
-
-model = YOLO(args.model_name, device=args.device)
-
-for input_path in args.files:
-    video = Video(input_path=input_path)
-
-    distance_function = "iou" if args.track_points == "bbox" else "euclidean"
-    distance_threshold = (
-        DISTANCE_THRESHOLD_BBOX
-        if args.track_points == "bbox"
-        else DISTANCE_THRESHOLD_CENTROID
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Track objects in a video.")
+    parser.add_argument("files", type=str, nargs="+", help="Video files to process")
+    parser.add_argument(
+        "--model-name", type=str, default="iterations/seventh", help="YOLOv5 model name"
     )
-
-    tracker = Tracker(
-        distance_function=distance_function,
-        distance_threshold=distance_threshold,
+    parser.add_argument(
+        "--img-size", type=int, default="640", help="YOLOv5 inference size (pixels)"
     )
+    parser.add_argument(
+        "--conf-threshold",
+        type=float,
+        default="0.25",
+        help="YOLOv5 object confidence threshold",
+    )
+    parser.add_argument(
+        "--iou-threshold", type=float, default="0.45", help="YOLOv5 IOU threshold for NMS"
+    )
+    parser.add_argument(
+        "--classes",
+        nargs="+",
+        type=int,
+        help="Filter by class: --classes 0, or --classes 0 2 3",
+    )
+    parser.add_argument(
+        "--device", type=str, default=None, help="Inference device: 'cpu' or 'cuda'"
+    )
+    parser.add_argument(
+        "--track-points",
+        type=str,
+        default="bbox",
+        help="Track points: 'centroid' or 'bbox'",
+    )
+    parser.add_argument("--output_csv", type=str, default="out.csv", 
+        help="Output path for the tracking data CSV file.") #WILL BE REPLACED WITH EXCEL
 
-    for frame in video:
-        yolo_detections = model(
-            frame,
-            conf_threshold=args.conf_threshold,
-            iou_threshold=args.iou_threshold,
-            image_size=args.img_size,
-            classes=args.classes,
+    parser.add_argument("--output_video", type=str, default="out.mp4",
+        help="Output video file if only running one file at a time.")
+    
+    args = parser.parse_args()
+    model = YOLO(args.model_name, device=args.device)
+    video_path_to_data: Dict[str, Dict[int, OrganismDetection]] = {}
+
+    for input_path in args.files:
+        video = Video(input_path=input_path)
+
+        distance_function = "iou" if args.track_points == "bbox" else "euclidean"
+        distance_threshold = (
+            DISTANCE_THRESHOLD_BBOX
+            if args.track_points == "bbox"
+            else DISTANCE_THRESHOLD_CENTROID
         )
-        detections = yolo_detections_to_norfair_detections(
-            yolo_detections, track_points=args.track_points
+
+        tracker = Tracker(
+            distance_function=distance_function,
+            distance_threshold=distance_threshold,
         )
-        tracked_objects = tracker.update(detections=detections)
-        if args.track_points == "centroid":
-            norfair.draw_points(frame, detections)
-            norfair.draw_tracked_objects(frame, tracked_objects)
-        elif args.track_points == "bbox":
+
+        for frame in video:
+            yolo_detections = model(
+                frame,
+                conf_threshold=args.conf_threshold,
+                iou_threshold=args.iou_threshold,
+                image_size=args.img_size,
+                classes=args.classes,
+            )
+            detections = yolo_detections_to_norfair_detections(
+                yolo_detections, track_points=args.track_points
+            )
+            tracked_objects = tracker.update(detections=detections)
+            #drawing bounding boxes
             norfair.draw_boxes(frame, detections)
             norfair.draw_tracked_boxes(frame, tracked_objects)
-        video.write(frame)
+            video.write(frame)

@@ -56,7 +56,7 @@ class YOLO:
         iou_threshold: float = 0.45,
         image_size: int = 720,
         classes: Optional[List[int]] = None
-    ) -> torch.tensor: #CHANGE: lowercase Tensor
+    ) -> torch.tensor: 
 
         self.model.conf = conf_threshold
         self.model.iou = iou_threshold
@@ -87,7 +87,7 @@ def format_seconds(seconds: int) -> str:
         return "%02d:%02d" % (m, s)
 
 def yolo_detections_to_norfair_detections(
-    yolo_detections: torch.Tensor,
+    yolo_detections: torch.tensor,
     track_points: str = "bbox"  # bbox or centroid
 ) -> List[norfair.Detection]:
     """Converts detections_as_xywh to norfair detections.
@@ -239,7 +239,7 @@ if __name__ == "__main__":
                     yolo_detections, track_points="bbox")
                 tracked_objects = tracker.update(
                     detections=norfair_detections, period=args.period)
-                # norfair.draw_boxes(frame, norfair_detections)
+                norfair.draw_boxes(frame, norfair_detections)
             else:
                 tracked_objects = tracker.update()
 
