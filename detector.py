@@ -17,8 +17,7 @@ import yolov5
 max_distance_between_points: int = 30
 PREVIEW_WINDOW_NAME = "image"
 classifications: List[str] = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish',
-                              'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology',
-                              'chordate']
+                              'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology',]
 
 class OrganismDetection:
     "Data class for organism detections."
