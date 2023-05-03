@@ -31,7 +31,7 @@ class OrganismDetection:
         "Registers a detection, including the frame of appearance and confidence level."
         self.frames.append(frame)
 
-    def get_first_last_frame(self) -> Tuple[int, int]:
+    def get_first_last_frame(self) -> tuple[int, int]: #Tuple --> tuple
         "Returns the first and last frame of appearance as a tuple."
         return (self.frames[0], self.frames[len(self.frames) - 1])    
 
