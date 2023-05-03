@@ -251,7 +251,7 @@ if __name__ == "__main__":
                 norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=[0, 255, 255], border_width=1, draw_labels=True)
             else:
                 norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=[0, 255, 255], border_width=1)
-            # frame = paths_drawer.draw(frame, tracked_objects)
+            # frame = paths_drawer.draw(frame, tracked_objects) # this line messed it up do not uncomment
             video.write(frame)
 
             if args.show_preview:
