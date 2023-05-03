@@ -20,8 +20,6 @@ classifications: List[str] = ['annelida', 'arthropoda', 'cnidaria', 'echinoderma
                               'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology']
 
 class OrganismDetection:
-    "Data class for organism detections."
-
     def __init__(self, num_id:int, classification:str) -> None:
         self.num_id: int = num_id
         self.classification: str = classification
@@ -253,7 +251,7 @@ if __name__ == "__main__":
                 norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=[0, 255, 255], border_width=1, draw_labels=True)
             else:
                 norfair.draw_tracked_boxes(frame, tracked_objects, border_colors=[0, 255, 255], border_width=1)
-            frame = paths_drawer.draw(frame, tracked_objects)
+            # frame = paths_drawer.draw(frame, tracked_objects)
             video.write(frame)
 
             if args.show_preview:
