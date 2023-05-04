@@ -9,7 +9,7 @@ for txt_file in glob.glob(os.path.join(output_path, '*.txt')):
     # Read the contents of the file
     with open(txt_file, 'r') as f:
         lines = f.readlines()
-    
+    print('IN FIRST FOR LOOP')
     # Extract the class and bounding box information for each object
     for line in lines:
         # Split the line into class ID and bounding box coordinates
