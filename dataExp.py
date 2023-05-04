@@ -49,4 +49,4 @@ with open(output_file, 'w') as f_out:
             bbox = list(map(float, bbox))
 
             # Write the class and bounding box information to the output file
-            f_out.write(f'Class ID: {class_id}, Bounding box: {bbox}\n')
+            output_file.write(f'Class ID: {class_id}, Bounding box: {bbox}\n')
