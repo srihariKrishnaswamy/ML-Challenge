@@ -1,22 +1,27 @@
 import glob
 import os
-# Path to the output file
-output_file = 'output.txt'
-# Path to the directory containing the output files
+from os.path import normcase
+first_output_file = 'raw_output.txt'
+final_output_file = 'processed_output.txt'
 output_path = 'runs/detect/exp/labels/'
-
-# Open the output file for writing
-with open(output_file, 'w') as f_out:
-    f_out.write('ACCESSING OUTPUT FILE \n')
-    # Loop through all the output files
+classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology']
+with open(first_output_file , 'w') as f_out:
     for txt_file in glob.glob(output_path + '*.txt'):
-        # Read the contents of the file
-      with open(txt_file, 'r') as f_in:
-        lines = f_in.readlines()
-        # class_id, *bbox = line.strip().split()
-        # # Convert the class ID and bounding box coordinates to the desired format
-        # class_id = int(class_id)
-        # bbox = list(map(float, bbox))
-        # # Write the class and bounding box information to the output file
-        # f_out.write(f'Class ID: {class_id}, Bounding box: {bbox}\n')
-        f_out.write(lines[0])
+        title = os.path.basename(txt_file)
+        title = title[8:]
+        title = title[:len(title)-4]
+        with open(txt_file, 'r') as f_in:
+            lines = f_in.readlines()
+            f_out.write(title + " " + lines[0])
+with open(final_output_file, 'w') as ff_out:
+    with open(first_output_file, 'r') as pf_in:
+      lines = pf_in.readlines()
+      for line in lines:
+        tokens = line.split()
+        frame = str(int(tokens[0]))
+        animal = classes[int(tokens[1])]
+        x_bound_left = str(640 * float(tokens[2]))
+        x_bound_right = str(640 * float(tokens[3]))
+        y_bound_top = str(384 * float(tokens[4]))
+        y_bound_bottom = str(384 * float(tokens[5]))
+        ff_out.write(frame + " " + animal + " " + x_bound_left + " " + x_bound_right + " " + y_bound_top + " " + y_bound_bottom + "\n")
