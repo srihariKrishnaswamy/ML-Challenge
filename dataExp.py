@@ -12,11 +12,8 @@ with open(output_file, 'w') as f_out:
     for txt_file in glob.glob(os.path.join(output_path, '*.txt')):
         # Read the contents of the file
         with open(txt_file, 'r') as f_in:
-            lines = f_in.readlines()
+            line = f_in.readlines()
 
-        # Extract the class and bounding box information for each object
-        for line in lines:
-            # Split the line into class ID and bounding box coordinates
             class_id, *bbox = line.strip().split()
 
             # Convert the class ID and bounding box coordinates to the desired format
