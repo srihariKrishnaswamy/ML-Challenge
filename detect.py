@@ -265,4 +265,4 @@ if __name__ == '__main__':
     opt = parse_opt()
     main(opt)
     with open("dimensions.txt", "w") as dims:
-        dims.write(vid_width + " " + vid_height)
+        dims.write(str(vid_width) + " " + str(vid_height))
