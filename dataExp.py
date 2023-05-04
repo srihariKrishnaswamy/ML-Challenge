@@ -29,7 +29,8 @@ output_path = 'runs/detect/exp'
 
 # Path to the output file
 output_file = 'output.txt'
-
+with open(output_file, 'w') as f:
+    f.write('ACCESSING OUTPUT FILE')
 # Open the output file for writing
 with open(output_file, 'w') as f_out:
 
@@ -49,5 +50,4 @@ with open(output_file, 'w') as f_out:
             bbox = list(map(float, bbox))
 
             # Write the class and bounding box information to the output file
-            with open(output_file, 'w') as f_out:
-                f_out.write(f'Class ID: {class_id}, Bounding box: {bbox}\n')
+            f_out.write(f'Class ID: {class_id}, Bounding box: {bbox}\n')
