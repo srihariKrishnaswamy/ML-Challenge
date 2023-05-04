@@ -36,6 +36,9 @@ from pathlib import Path
 
 import torch
 
+vid_height = 0
+vid_width = 0
+
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
 if str(ROOT) not in sys.path:
@@ -196,7 +199,9 @@ def run(
                         if vid_cap:  # video
                             fps = vid_cap.get(cv2.CAP_PROP_FPS)
                             w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT)) #RIGHT HERE
+                            vid_width = w
+                            vid_height = h
                         else:  # stream
                             fps, w, h = 30, im0.shape[1], im0.shape[0]
                         save_path = str(Path(save_path).with_suffix('.mp4'))  # force *.mp4 suffix on results videos
@@ -259,3 +264,5 @@ def main(opt):
 if __name__ == '__main__':
     opt = parse_opt()
     main(opt)
+    with open("dimensions.txt", "w") as dims:
+        dims.write(vid_width + " " + vid_height)
