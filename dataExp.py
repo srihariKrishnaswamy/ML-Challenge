@@ -54,16 +54,17 @@ with open(second_output_file, 'r') as sf_in:
         dict['y_up'] =  tokens[5]
         dict['y_low'] = tokens[6]
         data.append(dict)
-sortedData = sorted(data, key=lambda k: k['frame']) #sorting data by frame 
+sortedData = sorted(data, key=lambda k: int(k['frame'])) #sorting data by frame 
 # write to excel from txt
 workbook = xlsxwriter.Workbook(excelName)
 worksheet = workbook.add_worksheet("detections")
 worksheet.write(0,0,"Source Video")
-worksheet.write(0,1,"Classification")
-worksheet.write(0,2,"X Bound, Left")
-worksheet.write(0,3,"X Bound, Right")
-worksheet.write(0,4,"Y Bound, Upper")
-worksheet.write(0,5,"Y Bound, Lower")
+worksheet.write(0,1, "Current Frame")
+worksheet.write(0,2,"Classification")
+worksheet.write(0,3,"X Bound, Left")
+worksheet.write(0,4,"X Bound, Right")
+worksheet.write(0,5,"Y Bound, Upper")
+worksheet.write(0,6,"Y Bound, Lower")
 for index, entry in enumerate(sortedData):
     worksheet.write(index+1, 0, entry["vid"])
     worksheet.write(index+1, 1, entry["frame"])
