@@ -7,6 +7,7 @@ second_output_file = 'processed_output_1.txt'
 output_path = 'runs/detect/exp/labels/'
 classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology', 'chordate']
 sourceVid = ""
+
 def parseFrame(title):
     frameStr = ""
     dotHit = False
@@ -28,6 +29,7 @@ def parseFrame(title):
     for i in range(len(frameStr) - 1, -1, -1):
         fs2 += frameStr[i]
     return fs2
+
 with open("sourceVid.txt", "r") as sv:
     sourceVid = sv.readline()
 with open(first_output_file , 'w') as f_out:
@@ -75,7 +77,7 @@ sortedData = sorted(data, key=lambda k: int(k['frame'])) #sorting data by frame
 if os.path.exists(excelName):
     workbook = xlsxwriter.Workbook(excelName)
     worksheet = workbook.get_worksheet_by_name(worksheetName)
-    last_row = worksheet.dim_rowmax
+    last_row = worksheet.dim_rowmax()
     for row, entry in enumerate(sortedData, start=last_row+1):
         worksheet.write(row, 0, entry["vid"])
         worksheet.write(row, 1, entry["frame"])
@@ -84,6 +86,7 @@ if os.path.exists(excelName):
         worksheet.write(row, 4, entry["x_right"])
         worksheet.write(row, 5, entry["y_up"])
         worksheet.write(row, 6, entry["y_low"])
+    workbook.close()
 else:
     workbook = xlsxwriter.Workbook(excelName)
     worksheet = workbook.add_worksheet(worksheetName)
@@ -102,4 +105,4 @@ else:
         worksheet.write(index+1, 4, entry["x_right"])
         worksheet.write(index+1, 5, entry["y_up"])
         worksheet.write(index+1, 6, entry["y_low"])
-workbook.close()
+    workbook.close()
