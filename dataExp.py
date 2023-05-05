@@ -4,7 +4,7 @@ from os.path import normcase
 frame_width = 640
 frame_height = 328
 first_output_file = 'raw_output.txt'
-final_output_file = 'processed_output.txt'
+second_output_file = 'processed_output_1.txt'
 output_path = 'runs/detect/exp/labels/'
 classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology']
 sourceVid = ""
@@ -20,7 +20,7 @@ with open(first_output_file , 'w') as f_out:
             for line in lines:
                 if line != "":
                     f_out.write(sourceVid + " " + title + " " + line)
-with open(final_output_file, 'w') as ff_out:
+with open(second_output_file, 'w') as ff_out:
     with open(first_output_file, 'r') as pf_in:
       lines = pf_in.readlines()
       for line in lines:
