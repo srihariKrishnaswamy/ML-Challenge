@@ -1,10 +1,7 @@
 import glob
 import os
 import xlsxwriter
-from os.path import normcase
 
-frame_width = 640
-frame_height = 328
 first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
 output_path = 'runs/detect/exp/labels/'
@@ -37,7 +34,6 @@ with open(second_output_file, 'w') as ff_out:
         ff_out.write(source + " " + frame + " " + animal + " " + x_bound_left + " " + x_bound_right + " " + y_bound_top + " " + y_bound_bottom + "\n")
 os.remove(first_output_file)
 os.remove("sourceVid.txt")
-
 #getting data in list of dictionaries to be sorted
 data = []
 excelName = "detections.xlsx"
@@ -55,11 +51,11 @@ with open(second_output_file, 'r') as sf_in:
         dict['y_low'] = tokens[6]
         data.append(dict)
 sortedData = sorted(data, key=lambda k: int(k['frame'])) #sorting data by frame 
-# write to excel from txt
+# write to excel from list of dictionaries
 workbook = xlsxwriter.Workbook(excelName)
 worksheet = workbook.add_worksheet("detections")
 worksheet.write(0,0,"Source Video")
-worksheet.write(0,1, "Current Frame")
+worksheet.write(0,1,"Current Frame")
 worksheet.write(0,2,"Classification")
 worksheet.write(0,3,"X Bound, Left")
 worksheet.write(0,4,"X Bound, Right")
