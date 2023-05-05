@@ -1,6 +1,8 @@
 import glob
 import os
+import xlsxwriter
 from os.path import normcase
+
 frame_width = 640
 frame_height = 328
 first_output_file = 'raw_output.txt'
@@ -35,3 +37,37 @@ with open(second_output_file, 'w') as ff_out:
         ff_out.write(source + " " + frame + " " + animal + " " + x_bound_left + " " + x_bound_right + " " + y_bound_top + " " + y_bound_bottom + "\n")
 os.remove(first_output_file)
 os.remove("sourceVid.txt")
+# write to excel from txt
+data = []
+with open(second_output_file, 'r') as sf_in:
+    lines = sf_in.readlines()
+    for line in lines:
+        dict = {}
+        tokens = line.split()
+        dict['vid'] = tokens[0]
+        dict['frame'] = tokens[1]
+        dict['class'] = tokens[2]
+        dict['x_left'] = tokens[3]
+        dict['x_right'] = tokens[4]
+        dict['y_up'] =  tokens[5]
+        dict['y_low'] = tokens[6]
+        data.append(dict)
+workbook = xlsxwriter.Workbook("detections.xlsx")
+worksheet = workbook.add_worksheet("detections")
+worksheet.write(0,0,"Source Video")
+worksheet.write(1,0,"Classification")
+worksheet.write(2,0,"X Bound, Left")
+worksheet.write(3,0,"X Bound, Right")
+worksheet.write(4,0,"Y Bound, Upper")
+worksheet.write(5,0,"Y Bound, Lower")
+
+for index, entry in enumerate(data):
+    worksheet.write(index+1, 0, str(index))
+    worksheet.write(index+1, 1, entry["vid"])
+    worksheet.write(index+1, 2, entry["frame"])
+    worksheet.write(index+1, 3, entry["class"])
+    worksheet.write(index+1, 4, entry["x_left"])
+    worksheet.write(index+1, 5, entry["x_right"])
+    worksheet.write(index+1, 6, entry["y_up"])
+    worksheet.write(index+1, 7, entry["y_low"])
+workbook.close()

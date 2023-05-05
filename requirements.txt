@@ -55,3 +55,4 @@ yolov5
 norfair[video]
 pillow
 tk
+xlsxwriter
