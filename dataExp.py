@@ -19,7 +19,7 @@ def parseFrame(title):
                     dotHit = True
             elif title[i] == '_':
                 finished = True
-            else:
+            elif dotHit:
                 frameStr += title[i]
     #reversing the numbers string back
     fs2 = ""
