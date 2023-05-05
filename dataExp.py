@@ -5,7 +5,6 @@ import openpyxl
 
 first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
-log_file = 'processed_videos.txt' 
 classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology', 'chordate']
 sourceVid = ""
 
@@ -37,9 +36,9 @@ def determineOutputPath():
     latest = ""
     for folder in dir_list:
         latest = folder
-    return 'runs/detect' + latest + "/labels/"
-txts_path = determineOutputPath()
+    return 'runs/detect/' + latest + "/labels/"
 
+txts_path = determineOutputPath()
 with open(first_output_file , 'w') as f_out:
     for txt_file in glob.glob(txts_path + '*.txt'):
         frame = parseFrame(os.path.basename(txt_file)) #parses the frame number from the title of the file
