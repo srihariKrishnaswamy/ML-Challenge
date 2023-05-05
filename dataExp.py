@@ -37,8 +37,10 @@ with open(second_output_file, 'w') as ff_out:
         ff_out.write(source + " " + frame + " " + animal + " " + x_bound_left + " " + x_bound_right + " " + y_bound_top + " " + y_bound_bottom + "\n")
 os.remove(first_output_file)
 os.remove("sourceVid.txt")
+
 # write to excel from txt
 data = []
+excelName = "detections.xlsx"
 with open(second_output_file, 'r') as sf_in:
     lines = sf_in.readlines()
     for line in lines:
@@ -52,7 +54,8 @@ with open(second_output_file, 'r') as sf_in:
         dict['y_up'] =  tokens[5]
         dict['y_low'] = tokens[6]
         data.append(dict)
-workbook = xlsxwriter.Workbook("detections.xlsx")
+
+workbook = xlsxwriter.Workbook(excelName)
 worksheet = workbook.add_worksheet("detections")
 worksheet.write(0,0,"Source Video")
 worksheet.write(0,1,"Classification")
@@ -60,7 +63,6 @@ worksheet.write(0,2,"X Bound, Left")
 worksheet.write(0,3,"X Bound, Right")
 worksheet.write(0,4,"Y Bound, Upper")
 worksheet.write(0,5,"Y Bound, Lower")
-
 for index, entry in enumerate(data):
     worksheet.write(index+1, 0, entry["vid"])
     worksheet.write(index+1, 1, entry["frame"])
