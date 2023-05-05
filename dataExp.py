@@ -23,7 +23,6 @@ def parseFrame(title):
                 frameStr += title[i]
         else:
             break
-        print("frameStr: " + frameStr)
     #reversing the numbers string back
     fs2 = ""
     for i in range(len(frameStr) - 1, -1, -1):
