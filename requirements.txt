@@ -56,3 +56,4 @@ norfair[video]
 pillow
 tk
 xlsxwriter
+openpyxl
