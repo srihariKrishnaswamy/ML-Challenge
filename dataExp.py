@@ -12,7 +12,7 @@ def parseFrame(title):
     dotHit = False
     finished = False
     #parsing into reversed string of numbers
-    for i in range(len(title), 0):
+    for i in range(len(title) - 1, -1, -1):
         if finished == False:
             if dotHit == False:
                 if title[i] == '.':
@@ -21,11 +21,14 @@ def parseFrame(title):
                 finished = True
             elif dotHit:
                 frameStr += title[i]
+        else:
+            break
+        print("frameStr: " + frameStr)
     #reversing the numbers string back
     fs2 = ""
-    for i in range(len(frameStr), 0):
+    for i in range(len(frameStr) - 1, -1, -1):
         fs2 += frameStr[i]
-    return int(fs2) # cast to int and return
+    return fs2
 with open("sourceVid.txt", "r") as sv:
     sourceVid = sv.readline()
 with open(first_output_file , 'w') as f_out:
