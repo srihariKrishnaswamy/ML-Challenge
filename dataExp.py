@@ -22,8 +22,8 @@ with open(final_output_file, 'w') as ff_out:
         tokens = line.split()
         frame = str(int(tokens[0]))
         animal = classes[int(tokens[1])]
-        x_bound_left = str(frame_width * float(tokens[2]))
-        x_bound_right = str(frame_width * float(tokens[3]))
-        y_bound_top = str(frame_height * float(tokens[4]))
-        y_bound_bottom = str(frame_height * float(tokens[5]))
+        x_bound_left = str(tokens[2]) #x
+        x_bound_right = str(tokens[3]) #y
+        y_bound_top = str(tokens[4]) #width
+        y_bound_bottom = str(tokens[5]) #height
         ff_out.write(frame + " " + animal + " " + x_bound_left + " " + x_bound_right + " " + y_bound_top + " " + y_bound_bottom + "\n")

@@ -36,8 +36,6 @@ from pathlib import Path
 
 import torch
 
-vid_height = 0
-vid_width = 0
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -165,7 +163,7 @@ def run(
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
                     if save_txt:  # Write to file
-                        xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
+                        xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4))).view(-1).tolist()  # NOT-normalized xywh
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
                         with open(f'{txt_path}.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
@@ -208,11 +206,6 @@ def run(
 
         # Print time (inference-only)
         LOGGER.info(f"{s}{'' if len(det) else '(no detections), '}{dt[1].dt * 1E3:.1f}ms")
-    # WRITING DIMENSIONS TO TEXT FILE
-    vid_width = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    vid_height = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    with open("dimensions.txt", "w") as dims:
-        dims.write(str(vid_width) + " " + str(vid_height))
     # Print results
     t = tuple(x.t / seen * 1E3 for x in dt)  # speeds per image
     LOGGER.info(f'Speed: %.1fms pre-process, %.1fms inference, %.1fms NMS per image at shape {(1, 3, *imgsz)}' % t)
@@ -266,5 +259,3 @@ def main(opt):
 if __name__ == '__main__':
     opt = parse_opt()
     main(opt)
-    # with open("dimensions.txt", "w") as dims:
-    #     dims.write(str(vid_width) + " " + str(vid_height))
