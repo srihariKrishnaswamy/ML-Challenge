@@ -37,7 +37,7 @@ os.remove("sourceVid.txt")
 #getting data in list of dictionaries to be sorted
 data = []
 excelName = "detections.xlsx"
-worksheetName = "detections"
+worksheetName = "detections_wksht"
 with open(second_output_file, 'r') as sf_in:
     lines = sf_in.readlines()
     for line in lines:
@@ -54,7 +54,7 @@ with open(second_output_file, 'r') as sf_in:
 sortedData = sorted(data, key=lambda k: int(k['frame'])) #sorting data by frame 
 # write to excel from list of dictionaries
 if os.path.exists(excelName):
-    workbook = xlsxwriter.Worksbook(excelName)
+    workbook = xlsxwriter.Workbook(excelName)
     worksheet = workbook.get_worksheet_by_name(worksheetName)
     last_row = worksheet.dim_rowmax
     for row, entry in enumerate(sortedData, start=last_row+1):
