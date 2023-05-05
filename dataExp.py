@@ -55,11 +55,11 @@ with open(second_output_file, 'r') as sf_in:
 workbook = xlsxwriter.Workbook("detections.xlsx")
 worksheet = workbook.add_worksheet("detections")
 worksheet.write(0,0,"Source Video")
-worksheet.write(1,0,"Classification")
-worksheet.write(2,0,"X Bound, Left")
-worksheet.write(3,0,"X Bound, Right")
-worksheet.write(4,0,"Y Bound, Upper")
-worksheet.write(5,0,"Y Bound, Lower")
+worksheet.write(0,1,"Classification")
+worksheet.write(0,2,"X Bound, Left")
+worksheet.write(0,3,"X Bound, Right")
+worksheet.write(0,4,"Y Bound, Upper")
+worksheet.write(0,5,"Y Bound, Lower")
 
 for index, entry in enumerate(data):
     worksheet.write(index+1, 0, str(index))
