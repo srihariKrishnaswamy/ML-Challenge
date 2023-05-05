@@ -38,7 +38,7 @@ with open(second_output_file, 'w') as ff_out:
 os.remove(first_output_file)
 os.remove("sourceVid.txt")
 
-# write to excel from txt
+#getting data in list of dictionaries to be sorted
 data = []
 excelName = "detections.xlsx"
 with open(second_output_file, 'r') as sf_in:
@@ -54,7 +54,8 @@ with open(second_output_file, 'r') as sf_in:
         dict['y_up'] =  tokens[5]
         dict['y_low'] = tokens[6]
         data.append(dict)
-
+sortedData = sorted(data, key=lambda k: k['frame']) #sorting data by frame 
+# write to excel from txt
 workbook = xlsxwriter.Workbook(excelName)
 worksheet = workbook.add_worksheet("detections")
 worksheet.write(0,0,"Source Video")
@@ -63,7 +64,7 @@ worksheet.write(0,2,"X Bound, Left")
 worksheet.write(0,3,"X Bound, Right")
 worksheet.write(0,4,"Y Bound, Upper")
 worksheet.write(0,5,"Y Bound, Lower")
-for index, entry in enumerate(data):
+for index, entry in enumerate(sortedData):
     worksheet.write(index+1, 0, entry["vid"])
     worksheet.write(index+1, 1, entry["frame"])
     worksheet.write(index+1, 2, entry["class"])
