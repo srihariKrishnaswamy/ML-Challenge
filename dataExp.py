@@ -5,20 +5,37 @@ import xlsxwriter
 first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
 output_path = 'runs/detect/exp/labels/'
-classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology']
+classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology', 'chordate']
 sourceVid = ""
+def parseFrame(title):
+    frameStr = ""
+    dotHit = False
+    finished = False
+    #parsing into reversed string of numbers
+    for i in range(len(title), 0):
+        if finished == False:
+            if dotHit == False:
+                if title[i] == '.':
+                    dotHit = True
+            elif title[i] == '_':
+                finished = True
+            else:
+                frameStr += title[i]
+    #reversing the numbers string back
+    fs2 = ""
+    for i in range(len(frameStr), 0):
+        fs2 += frameStr[i]
+    return int(fs2) # cast to int and return
 with open("sourceVid.txt", "r") as sv:
     sourceVid = sv.readline()
 with open(first_output_file , 'w') as f_out:
     for txt_file in glob.glob(output_path + '*.txt'):
-        title = os.path.basename(txt_file)
-        title = title[8:]
-        title = title[:len(title)-4]
+        frame = parseFrame(os.path.basename(txt_file)) #parses the frame number from the title of the file
         with open(txt_file, 'r') as f_in:
             lines = f_in.readlines()
             for line in lines:
                 if line != "":
-                    f_out.write(sourceVid + " " + title + " " + line)
+                    f_out.write(sourceVid + " " + frame + " " + line)
 with open(second_output_file, 'w') as ff_out:
     with open(first_output_file, 'r') as pf_in:
       lines = pf_in.readlines()
