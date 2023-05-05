@@ -1,6 +1,7 @@
 import glob
 import os
 import xlsxwriter
+import openpyxl
 
 first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
@@ -75,17 +76,27 @@ with open(second_output_file, 'r') as sf_in:
 sortedData = sorted(data, key=lambda k: int(k['frame'])) #sorting data by frame 
 # write to excel from list of dictionaries
 if os.path.exists(excelName):
+    # read in all the data from this into a list of dictionaries
+    # delete this excel file, having stored all the data in the dicts
+    # write all of them to a new excel file with the same name 
+    prevData = []
+    book = openpyxl.load_workbook(excelName)
+    sheet = book.active
+    for row in sheet.iter_rows(min_row=0, values_only=True):
+        obj = {"vid": row[0], "frame": row[1], "class": row[2], "x_left": row[3], "x_right": row[4], "y_up": row[5], "y_down": row[6]}
+        prevData.append(obj) #the whole row of data
+    os.remove(excelName) # deleting excel file
+    prevData.extend(sortedData) #adding new data to the rest
     workbook = xlsxwriter.Workbook(excelName)
-    worksheet = workbook.get_worksheet_by_name(worksheetName)
-    last_row = worksheet.dim_rowmax()
-    for row, entry in enumerate(sortedData, start=last_row+1):
-        worksheet.write(row, 0, entry["vid"])
-        worksheet.write(row, 1, entry["frame"])
-        worksheet.write(row, 2, entry["class"])
-        worksheet.write(row, 3, entry["x_left"])
-        worksheet.write(row, 4, entry["x_right"])
-        worksheet.write(row, 5, entry["y_up"])
-        worksheet.write(row, 6, entry["y_low"])
+    worksheet = workbook.add_worksheet(worksheetName)
+    for index, entry in enumerate(prevData): #writing all of it to the same excel worksheet
+        worksheet.write(index+1, 0, entry["vid"])
+        worksheet.write(index+1, 1, entry["frame"])
+        worksheet.write(index+1, 2, entry["class"])
+        worksheet.write(index+1, 3, entry["x_left"])
+        worksheet.write(index+1, 4, entry["x_right"])
+        worksheet.write(index+1, 5, entry["y_up"])
+        worksheet.write(index+1, 6, entry["y_low"])
     workbook.close()
 else:
     workbook = xlsxwriter.Workbook(excelName)
