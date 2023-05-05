@@ -33,3 +33,5 @@ with open(second_output_file, 'w') as ff_out:
         x_bound_right = str(float(tokens[5]) + float(tokens[3])) #x2
         y_bound_bottom = str(float(tokens[6]) + float(tokens[4])) #y2
         ff_out.write(source + " " + frame + " " + animal + " " + x_bound_left + " " + x_bound_right + " " + y_bound_top + " " + y_bound_bottom + "\n")
+os.remove(first_output_file)
+os.remove("sourceVid.txt")
