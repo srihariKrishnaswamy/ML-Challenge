@@ -31,13 +31,14 @@ def parseFrame(title):
     return fs2
 def determineOutputPath(): 
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    subfolder = os.path.join(current_dir, 'runs/detect')
+    subfolder = os.path.join(current_dir, 'runs/detect/')
     dir_list = os.listdir(subfolder)
-    latest = ""
-    for folder in dir_list:
-        latest = folder
-    return 'runs/detect/' + latest + "/labels/"
-
+    latest = dir_list[0]
+    addy = "./runs/detect/" + latest + "/labels/"
+    print(addy)
+    return addy
+with open("sourceVid.txt", 'r') as sv:
+  sourceVid = sv.readline()
 txts_path = determineOutputPath()
 with open(first_output_file , 'w') as f_out:
     for txt_file in glob.glob(txts_path + '*.txt'):
@@ -45,7 +46,7 @@ with open(first_output_file , 'w') as f_out:
         with open(txt_file, 'r') as f_in:
             lines = f_in.readlines()
             for line in lines:
-                if line != "":
+                if line != "" and line != " ":
                     f_out.write(sourceVid + " " + frame + " " + line)
 with open(second_output_file, 'w') as ff_out:
     with open(first_output_file, 'r') as pf_in:
