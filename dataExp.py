@@ -37,6 +37,12 @@ def determineOutputPath():
     addy = "./runs/detect/" + latest + "/labels/"
     print(addy)
     return addy
+def ridListOfEmptyRows(data):
+    for i in range(len(data)):
+        if data[i]["vid"] == None or data[i]["vid"] == "":
+            data.remove(i)
+        else:
+            break
 with open("sourceVid.txt", 'r') as sv:
   sourceVid = sv.readline()
 txts_path = determineOutputPath()
@@ -95,14 +101,15 @@ if os.path.exists(excelName):
     prevData.extend(sortedData) #adding new data to the rest
     workbook = xlsxwriter.Workbook(excelName)
     worksheet = workbook.add_worksheet(worksheetName)
+    ridListOfEmptyRows(prevData)
     for index, entry in enumerate(prevData): #writing all of it to the same excel worksheet
-        worksheet.write(index, 0, entry["vid"])
-        worksheet.write(index, 1, entry["frame"])
-        worksheet.write(index, 2, entry["class"])
-        worksheet.write(index, 3, entry["x_left"])
-        worksheet.write(index, 4, entry["x_right"])
-        worksheet.write(index, 5, entry["y_up"])
-        worksheet.write(index, 6, entry["y_low"])
+        worksheet.write(index+1, 0, entry["vid"])
+        worksheet.write(index+1, 1, entry["frame"])
+        worksheet.write(index+1, 2, entry["class"])
+        worksheet.write(index+1, 3, entry["x_left"])
+        worksheet.write(index+1, 4, entry["x_right"])
+        worksheet.write(index+1, 5, entry["y_up"])
+        worksheet.write(index+1, 6, entry["y_low"])
     workbook.close()
 else:
     workbook = xlsxwriter.Workbook(excelName)
