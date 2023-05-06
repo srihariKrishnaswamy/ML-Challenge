@@ -32,8 +32,18 @@ def parseFrame(title):
 def determineOutputPath(): 
     current_dir = os.path.dirname(os.path.abspath(__file__))
     subfolder = os.path.join(current_dir, 'runs/detect/')
+    max = 0
+    latest = ""
     dir_list = os.listdir(subfolder)
-    latest = dir_list[0]
+    for file in dir_list:
+        if len(file) > 3:
+            expNum = int(file[3:len(file)])
+            if expNum > max:
+                max = expNum
+    if max == 0:
+        latest = "exp"
+    else:
+        latest = "exp" + str(max)
     addy = "./runs/detect/" + latest + "/labels/"
     print(addy)
     return addy
@@ -102,6 +112,8 @@ if os.path.exists(excelName):
     workbook = xlsxwriter.Workbook(excelName)
     worksheet = workbook.add_worksheet(worksheetName)
     ridListOfEmptyRows(prevData)
+    print("ITEMS")
+    print(prevData)
     for index, entry in enumerate(prevData): #writing all of it to the same excel worksheet
         worksheet.write(index+1, 0, entry["vid"])
         worksheet.write(index+1, 1, entry["frame"])
