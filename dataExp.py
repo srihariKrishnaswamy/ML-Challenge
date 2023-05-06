@@ -105,6 +105,7 @@ if os.path.exists(excelName):
     sheet = book.active
     for row in sheet.iter_rows(values_only=True):
         if row[0] != None: #to prevent empty rows at the top
+          print("HIT")
           obj = {"vid": row[0], "frame": row[1], "class": row[2], "x_left": row[3], "x_right": row[4], "y_up": row[5], "y_low": row[6]}
           prevData.append(obj) #the whole row of data
     os.remove(excelName) # deleting excel file
@@ -115,13 +116,14 @@ if os.path.exists(excelName):
     print("ITEMS")
     print(prevData)
     for index, entry in enumerate(prevData): #writing all of it to the same excel worksheet
-        worksheet.write(index+1, 0, entry["vid"])
-        worksheet.write(index+1, 1, entry["frame"])
-        worksheet.write(index+1, 2, entry["class"])
-        worksheet.write(index+1, 3, entry["x_left"])
-        worksheet.write(index+1, 4, entry["x_right"])
-        worksheet.write(index+1, 5, entry["y_up"])
-        worksheet.write(index+1, 6, entry["y_low"])
+        if entry["vid"] != None: #double checking
+          worksheet.write(index+1, 0, entry["vid"])
+          worksheet.write(index+1, 1, entry["frame"])
+          worksheet.write(index+1, 2, entry["class"])
+          worksheet.write(index+1, 3, entry["x_left"])
+          worksheet.write(index+1, 4, entry["x_right"])
+          worksheet.write(index+1, 5, entry["y_up"])
+          worksheet.write(index+1, 6, entry["y_low"])
     workbook.close()
 else:
     workbook = xlsxwriter.Workbook(excelName)
