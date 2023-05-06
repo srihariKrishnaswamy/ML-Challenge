@@ -103,15 +103,15 @@ if os.path.exists(excelName):
     prevData = []
     book = openpyxl.load_workbook(excelName)
     sheet = book.active
-    for row in sheet.iter_rows(min_row=0, values_only=True):
-        if row[0] != "" and row[0] != " ": #to prevent empty rows at the top
-            obj = {"vid": row[0], "frame": row[1], "class": row[2], "x_left": row[3], "x_right": row[4], "y_up": row[5], "y_low": row[6]}
-        prevData.append(obj) #the whole row of data
+    for row in sheet.iter_rows(values_only=True):
+        if row[0] != None: #to prevent empty rows at the top
+          obj = {"vid": row[0], "frame": row[1], "class": row[2], "x_left": row[3], "x_right": row[4], "y_up": row[5], "y_low": row[6]}
+          prevData.append(obj) #the whole row of data
     os.remove(excelName) # deleting excel file
     prevData.extend(sortedData) #adding new data to the rest
     workbook = xlsxwriter.Workbook(excelName)
     worksheet = workbook.add_worksheet(worksheetName)
-    ridListOfEmptyRows(prevData)
+    #ridListOfEmptyRows(prevData)
     print("ITEMS")
     print(prevData)
     for index, entry in enumerate(prevData): #writing all of it to the same excel worksheet
