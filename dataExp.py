@@ -61,8 +61,6 @@ with open(second_output_file, 'w') as ff_out:
         x_bound_right = str(float(tokens[5]) + float(tokens[3])) #x2
         y_bound_bottom = str(float(tokens[6]) + float(tokens[4])) #y2
         ff_out.write(source + " " + frame + " " + animal + " " + x_bound_left + " " + x_bound_right + " " + y_bound_top + " " + y_bound_bottom + "\n")
-os.remove(first_output_file)
-os.remove("sourceVid.txt")
 #getting data in list of dictionaries to be sorted
 data = []
 excelName = "detections.xlsx"
@@ -124,3 +122,11 @@ else:
         worksheet.write(index+1, 5, entry["y_up"])
         worksheet.write(index+1, 6, entry["y_low"])
     workbook.close()
+# delete all created files other than the spreadsheet & video
+os.remove(first_output_file)
+os.remove(second_output_file)
+os.remove("sourceVid.txt")
+for file in os.listdir(txts_path):
+    file_name = os.path.join(txts_path, file)
+    os.remove(file_name)
+os.rmdir(txts_path)
