@@ -13,8 +13,8 @@ def fixFormat():
   wb = openpyxl.load_workbook(excelName)
   ws = wb.active
   newData = []
-  for row in ws.iter_rows(values_only=True): #rooting out any empty cells
-    if row[0] != None:
+  for row in ws.iter_rows(min_row=0, values_only=True): #rooting out any empty cells
+    if row[0] != None and row[1] != None:
       obj = {"vid": row[0], "frame": row[1], "class": row[2], "x_left": row[3], "x_right": row[4], "y_up": row[5], "y_low": row[6]}
       newData.append(obj)
     else:
