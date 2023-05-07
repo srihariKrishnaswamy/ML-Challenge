@@ -1,8 +1,27 @@
 import subprocess
 import os
+import shutil
 vids = []
 choice = ""
 model = "./iterations/seventh.pt"
+output_folder = "./output"
+def_output_folder = "out"
+full_output_path = ""
+def determine_output_folder(): #assumes that the base output folder exists, creates new output folder
+    output_list = os.listdir(output_folder)
+    max = 0
+    for folder in output_list:
+        if len(folder) == len(def_output_folder):
+            max = 2
+        else:
+            folder_num = int(folder[3:len(folder)])
+            if folder_num >= max:
+                max = folder_num + 1
+    if max == 0:
+        new_output_folder = os.path.join(output_folder,def_output_folder)
+    else:
+        new_output_folder = os.path.join(output_folder,def_output_folder + str(max))
+    return new_output_folder
 while choice != "quit":
     print("Enter video to process, enter quit to quit (must be valid video in folder)")
     choice = input()
@@ -20,3 +39,10 @@ for video in vids:
     proc1.communicate()
     proc2 = subprocess.Popen(['python', 'dataExp.py'])
     proc2.communicate()
+#video processing done and videos & excel file generated
+if os.path.exists(output_folder) == False:
+    os.mkdir(output_folder)
+full_output_path = determine_output_folder()
+print("OUTPUT FOLDER: " + full_output_path)
+# moving appropriate files
+shutil.move("detections.xlsx", full_output_path)
