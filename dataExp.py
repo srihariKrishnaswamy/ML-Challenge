@@ -11,7 +11,7 @@ excelName = "detections.xlsx"
 worksheetName = "detections_wksht"
 def fixFormat():
   wb = openpyxl.load_workbook(excelName)
-  ws = book.active
+  ws = wb.active
   newData = []
   for row in ws.iter_rows(values_only=True): #rooting out any empty cells
     if row[0] != None:
