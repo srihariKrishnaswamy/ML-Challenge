@@ -2,7 +2,7 @@ import subprocess
 import os
 vids = []
 choice = ""
-model = "seventh.pt"
+model = "./iterations/seventh.pt"
 while choice != "quit":
     print("Enter video to process, enter quit to quit (must be valid video in folder)")
     choice = input()
@@ -11,7 +11,7 @@ while choice != "quit":
     elif os.path.exists(os.path.join("./videos", choice)) == False:
         print("path does not exist")
     else:
-        vids.append(choice)
+        vids.append(os.path.join("./videos", choice))
 print(vids)
 
 for video in vids:
