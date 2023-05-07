@@ -9,6 +9,7 @@ classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollu
 sourceVid = ""
 excelName = "detections.xlsx"
 worksheetName = "detections_wksht"
+output_path_log = "output_path_log.txt"
 def fixFormat():
   wb = openpyxl.load_workbook(excelName)
   ws = wb.active
@@ -50,6 +51,13 @@ def parseFrame(title):
     for i in range(len(frameStr) - 1, -1, -1):
         fs2 += frameStr[i]
     return fs2
+def logOutputPath(outputPath): #logs yolo's output path to a txt file so we can go through each folder, grab the video and delete it
+   if os.path.exists(output_path_log):
+      with open(output_path_log, 'a') as out:
+         out.write(outputPath + "\n")
+   else:
+      with open(output_path_log, 'w') as opl:
+         opl.write(outputPath + "\n")
 def determineOutputPath(): 
     current_dir = os.path.dirname(os.path.abspath(__file__))
     subfolder = os.path.join(current_dir, 'runs/detect/')
@@ -67,6 +75,7 @@ def determineOutputPath():
         latest = "exp" + str(max)
     addy = "./runs/detect/" + latest + "/labels/"
     print(addy)
+    logOutputPath("./runs/detect/" + latest)
     return addy
 with open("sourceVid.txt", 'r') as sv:
   sourceVid = sv.readline()
