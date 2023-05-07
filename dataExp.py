@@ -7,7 +7,30 @@ first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
 classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology', 'chordate']
 sourceVid = ""
-
+excelName = "detections.xlsx"
+worksheetName = "detections_wksht"
+def fixFormat():
+  wb = openpyxl.load_workbook(excelName)
+  ws = book.active
+  newData = []
+  for row in ws.iter_rows(values_only=True): #rooting out any empty cells
+    if row[0] != None:
+      obj = {"vid": row[0], "frame": row[1], "class": row[2], "x_left": row[3], "x_right": row[4], "y_up": row[5], "y_low": row[6]}
+      newData.append(obj)
+    else:
+      print("avoided")
+  os.remove(excelName)
+  newBook = xlsxwriter.Workbook(excelName)
+  newWorksheet = newBook.add_worksheet(worksheetName)
+  for index, entry in enumerate(newData): #writing it back
+    newWorksheet.write(index, 0, entry["vid"])
+    newWorksheet.write(index, 1, entry["frame"])
+    newWorksheet.write(index, 2, entry["class"])
+    newWorksheet.write(index, 3, entry["x_left"])
+    newWorksheet.write(index, 4, entry["x_right"])
+    newWorksheet.write(index, 5, entry["y_up"])
+    newWorksheet.write(index, 6, entry["y_low"])
+  newBook.close()
 def parseFrame(title):
     frameStr = ""
     dotHit = False
@@ -105,9 +128,10 @@ if os.path.exists(excelName):
     sheet = book.active
     for row in sheet.iter_rows(values_only=True):
         if row[0] != None: #to prevent empty rows at the top
-          print("HIT")
           obj = {"vid": row[0], "frame": row[1], "class": row[2], "x_left": row[3], "x_right": row[4], "y_up": row[5], "y_low": row[6]}
           prevData.append(obj) #the whole row of data
+        else:
+          print("GOT")
     os.remove(excelName) # deleting excel file
     prevData.extend(sortedData) #adding new data to the rest
     workbook = xlsxwriter.Workbook(excelName)
@@ -144,6 +168,7 @@ else:
         worksheet.write(index+1, 5, entry["y_up"])
         worksheet.write(index+1, 6, entry["y_low"])
     workbook.close()
+fixFormat()
 # delete all created files other than the spreadsheet & video
 os.remove(first_output_file)
 os.remove(second_output_file)
