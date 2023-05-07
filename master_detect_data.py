@@ -52,7 +52,7 @@ folders = []
 with open(yolo_output_path_log, 'r') as yolo_output:
     for line in yolo_output.readlines():
         folders.append(line.strip())
-for folder in folders:
-    vid = os.listdir(os.path.join("runs/detect", folder))[0]
+for i in range(len(folders)):
+    vid = os.path.join(folders[i], os.listdir(folders[i])[0])
     shutil.move(vid, full_output_path)
-    # os.remove(os.path.join("runs/detect", folder))
+    # os.remove(folder)
