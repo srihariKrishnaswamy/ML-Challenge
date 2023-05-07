@@ -16,7 +16,7 @@ print(vids)
 
 for video in vids:
     print("curr vid: " + video)
-    proc1 = subprocess.Popen(['python', 'detect.py', '--model', model, '--source', video, '--save-txt'])
+    proc1 = subprocess.Popen(['python', 'detect.py', '--weights', model, '--source', video, '--save-txt'])
     proc1.communicate()
     proc2 = subprocess.Popen(['python', 'dataExp.py'])
     proc2.communicate()
