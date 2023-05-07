@@ -17,8 +17,6 @@ def fixFormat():
     if row[0] != None and row[1] != None:
       obj = {"vid": row[0], "frame": row[1], "class": row[2], "x_left": row[3], "x_right": row[4], "y_up": row[5], "y_low": row[6]}
       newData.append(obj)
-    else:
-      print("avoided")
   os.remove(excelName)
   newBook = xlsxwriter.Workbook(excelName)
   newWorksheet = newBook.add_worksheet(worksheetName)
@@ -70,12 +68,6 @@ def determineOutputPath():
     addy = "./runs/detect/" + latest + "/labels/"
     print(addy)
     return addy
-def ridListOfEmptyRows(data):
-    for i in range(len(data)):
-        if data[i]["vid"] == None or data[i]["vid"] == "":
-            data.remove(i)
-        else:
-            break
 with open("sourceVid.txt", 'r') as sv:
   sourceVid = sv.readline()
 txts_path = determineOutputPath()
@@ -136,9 +128,6 @@ if os.path.exists(excelName):
     prevData.extend(sortedData) #adding new data to the rest
     workbook = xlsxwriter.Workbook(excelName)
     worksheet = workbook.add_worksheet(worksheetName)
-    #ridListOfEmptyRows(prevData)
-    print("ITEMS")
-    print(prevData)
     for index, entry in enumerate(prevData): #writing all of it to the same excel worksheet
         if entry["vid"] != None: #double checking
           worksheet.write(index+1, 0, entry["vid"])
