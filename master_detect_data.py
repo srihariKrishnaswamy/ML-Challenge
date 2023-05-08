@@ -55,7 +55,6 @@ os.remove(yolo_output_path_log)
 print("FOLDERS: ")
 print(folders)
 for i in range(len(folders)):
-  print("i: " + str(i))
   vid = os.path.join(folders[i], os.listdir(folders[i])[0])
   shutil.move(vid, full_output_path)
   os.rmdir(folders[i])
