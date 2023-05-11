@@ -54,6 +54,7 @@ norfair
 yolov5
 norfair[video]
 pillow
+Pillow
 tk
 xlsxwriter
 openpyxl
