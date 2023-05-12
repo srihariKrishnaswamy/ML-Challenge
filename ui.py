@@ -7,13 +7,11 @@ import shutil
 
 image_path = os.path.join(os.path.dirname(__file__), "./assets/splash.jpg")
 min_width = 600
-min_height = 580
+min_height = 550
 videos_path = os.path.join(os.path.dirname(__file__), "videos/")
 def_output_folder = "out"
 
-
 class GUI:
-
     def __init__(self):
         #non tk vars
         self.possible_vids = self.determine_possible_videos()
@@ -95,9 +93,6 @@ class GUI:
                                    pady=5)
         thirdframe.grid(row=3, column=0, sticky="ew")
 
-        gpu_checkbox = tk.Checkbutton(thirdframe, text="Use GPU")
-        gpu_checkbox.pack()
-
         model_location = tk.Label(
             thirdframe,
             text="Model location: " +
@@ -124,7 +119,7 @@ class GUI:
     def start_inference(self):
         if len(self.entered_vids) > 0:
             self.status_label_txt.set(
-                "Videos being processed")  #figure out why this doesn't show
+                "Videos being processed")
             args_list = ["python", "master_detect_data.py", "--videos"]
             args_list.extend(self.entered_vids)
             print(args_list)
@@ -198,5 +193,7 @@ class GUI:
     def wipe_yolo_output(self):
         if os.path.exists("runs"):
             shutil.rmtree("runs")
+        if os.path.exists("sourceVid.txt"):
+            os.remove("sourceVid.txt")
         
 GUI()

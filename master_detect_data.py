@@ -12,7 +12,7 @@ def_output_folder = "out"
 full_output_path = ""
 yolo_output_path_log = "output_path_log.txt"
 
-def determine_output_folder(): #assumes that the base output folder exists, creates new output folder
+def determine_output_folder(): #assumes that the base output folder exists, returns path of new output folder
   output_list = os.listdir(output_folder)
   max = 0
   for folder in output_list:
@@ -33,7 +33,7 @@ vids = args.videos
 
 if len(vids) > 0:
   for video in vids:
-    print("curr vid: " + video)
+    print("Current Video: " + video)
     proc1 = subprocess.Popen(['python', 'detect.py', '--weights', model, '--source', os.path.join("videos/", video), '--save-txt'])
     proc1.communicate()
     proc2 = subprocess.Popen(['python', 'dataExp.py'])
