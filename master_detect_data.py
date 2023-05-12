@@ -3,10 +3,10 @@ import os
 import shutil
 import argparse
 parser = argparse.ArgumentParser(description='Inference Running')
-parser.add_argument('--videos', nargs='*', type=str)
+parser.add_argument('--videos', nargs='*', type=str, help="the list of videos to process")
+parser.add_argument('--model', type=str, help="the model doing the inference (.pt file)")
 vids = []
 choice = ""
-model = "./iterations/seventh.pt"
 output_folder = "./output"
 def_output_folder = "out"
 full_output_path = ""
@@ -30,6 +30,7 @@ def determine_output_folder(): #assumes that the base output folder exists, retu
 
 args = parser.parse_args()
 vids = args.videos
+model = os.path.join("./iterations/", args.model)
 
 if len(vids) > 0:
   for video in vids:

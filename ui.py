@@ -7,7 +7,7 @@ import shutil
 
 image_path = os.path.join(os.path.dirname(__file__), "./assets/splash.jpg")
 min_width = 600
-min_height = 550
+min_height = 570
 videos_path = os.path.join(os.path.dirname(__file__), "videos/")
 def_output_folder = "out"
 
@@ -18,9 +18,9 @@ class GUI:
         self.entered_vids = []
         self.detection_logging_process = None
         #tk vars
-        self.model_path = "iterations/seventh.pt"
+        self.model_name = "seventh.pt"
         self.root = tk.Tk()
-        self.root.title("Classifier")
+        self.root.title("Object Detector")
         self.root.geometry(str(min_width) + "x" + str(min_height))
         self.root.minsize(min_width, min_height)
         self.root.resizable(False, True)
@@ -93,12 +93,18 @@ class GUI:
                                    pady=5)
         thirdframe.grid(row=3, column=0, sticky="ew")
 
+        self.model_location_txt = tk.StringVar(value="Model location: " + os.path.join(os.path.dirname(__file__), "iterations/" + self.model_name))
         model_location = tk.Label(
             thirdframe,
-            text="Model location: " +
-            os.path.join(os.path.dirname(__file__), self.model_path),
-            wraplength=550)
-        model_location.pack()
+            textvariable=self.model_location_txt,
+            wraplength=460)
+        model_location.grid(row=0, column=0, sticky="ew")
+
+        self.new_model_entry = tk.Entry(thirdframe, width=40)
+        self.new_model_entry.grid(row=1, column=0, sticky="ew")
+
+        self.new_model_button = tk.Button(thirdframe, text="Enter New Model Name", command=self.handle_model_input)
+        self.new_model_button.grid(row=1, column=1, sticky="ew")
 
         fourthframe = tk.LabelFrame(parent_frame, pady=5)
         fourthframe.grid(row=4, column=0, sticky="news")
@@ -116,11 +122,19 @@ class GUI:
 
         self.root.mainloop()
 
+    def handle_model_input(self):
+        new_model = self.new_model_entry.get()
+        if os.path.exists(os.path.join("./iterations", new_model)):
+            self.model_name = new_model
+            self.model_location_txt.set("Model location: " + os.path.join(os.path.dirname(__file__), "iterations/" + self.model_name))
+        self.new_model_entry.delete(0, tk.END)
+
     def start_inference(self):
         if len(self.entered_vids) > 0:
             self.status_label_txt.set(
                 "Videos being processed")
-            args_list = ["python", "master_detect_data.py", "--videos"]
+            args_list = ["python", "master_detect_data.py", "--model", "--videos"]
+            args_list.insert(3, self.model_name)
             args_list.extend(self.entered_vids)
             print(args_list)
             self.entered_vids = []
