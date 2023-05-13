@@ -124,9 +124,11 @@ class GUI:
 
     def handle_model_input(self):
         new_model = self.new_model_entry.get()
-        if os.path.exists(os.path.join("./iterations", new_model)):
+        if new_model != "" and os.path.exists(os.path.join("./iterations", new_model)):
             self.model_name = new_model
             self.model_location_txt.set("Model location: " + os.path.join(os.path.dirname(__file__), "iterations/" + self.model_name))
+        else:
+            self.model_location_txt.set("Model does not exist with name: " + str(new_model) + ", still using " + str(self.model_name))
         self.new_model_entry.delete(0, tk.END)
 
     def start_inference(self):
@@ -209,5 +211,8 @@ class GUI:
             shutil.rmtree("runs")
         if os.path.exists("sourceVid.txt"):
             os.remove("sourceVid.txt")
-        
+        if os.path.exists("detections.xlsx"):
+            os.remove("detections.xlsx")
+        if os.path.exists("output_path_log.txt"):
+            os.remove("output_path_log.txt")
 GUI()
