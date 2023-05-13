@@ -5,7 +5,7 @@ import subprocess
 import signal
 import shutil
 
-image_path = os.path.join(os.path.dirname(__file__), "./assets/splash.jpg")
+image_path = os.path.join(os.path.dirname(__file__), "./assets/NewBanner.jpg")
 min_width = 600
 min_height = 570
 videos_path = os.path.join(os.path.dirname(__file__), "videos/")
