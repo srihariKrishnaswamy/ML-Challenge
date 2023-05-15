@@ -4,14 +4,12 @@ from PIL import ImageTk, Image
 import subprocess
 import signal
 import shutil
-import sys
 from threading import Thread
 from queue import Empty, Queue
-import datetime
 
 image_path = os.path.join(os.path.dirname(__file__), "./assets/NewBanner.jpg")
 min_width = 600
-min_height = 600
+min_height = 700
 videos_path = os.path.join(os.path.dirname(__file__), "videos/")
 def_output_folder = "out"
 
@@ -121,19 +119,24 @@ class GUI:
         self.new_model_button.grid(row=1, column=1, sticky="ew")
 
         # SHOWING STDOUT ON TKINTER
-        fourthframe = tk.LabelFrame(parent_frame, pady=10)
+        fourthframe = tk.LabelFrame(parent_frame, text="Inference Output")
         fourthframe.grid(row=4, column=0, sticky="news")
         fourthframe.columnconfigure(0, weight=1)
         fourthframe.rowconfigure(0, weight=1)
         parent_frame.rowconfigure(4, weight=1)
 
-        # self.cmd_label = tk.Label(fourthframe, text="   ", font=(None, 200))
-        # self.cmd_label.pack(ipadx=4, padx=4, ipady=4, pady=4, fill='both')
-
-        self.cmd_output_area = tk.Text(fourthframe, bd=0, height=6)
+        # Output area and scrolling code for terminal display adapted from last year's deepsea detector
+        self.cmd_output_area = tk.Text(fourthframe, bd=0, height=10)
         self.cmd_output_area.grid(column=1, row=1, sticky="news")
         self.cmd_output_area.tag_config("errorstring", foreground="#CC0000")
         self.cmd_output_area.tag_config("infostring", foreground="#008800")
+
+        y_scroll = tk.Scrollbar(fourthframe, orient="vertical", command=self.cmd_output_area.yview)
+        y_scroll.grid(column=2, row=1, sticky="ns")
+        x_scroll = tk.Scrollbar(fourthframe, orient="horizontal", command=self.cmd_output_area.xview)
+        x_scroll.grid(column=1, row=2, sticky="we")
+        self.cmd_output_area['yscrollcommand'] = y_scroll.set
+        self.cmd_output_area['xscrollcommand'] = x_scroll.set
 
         self.update(self.cmd_output_buffer)
 
@@ -273,15 +276,12 @@ class GUI:
     # Adapted from last year's deepsea-detector
     def update(self, cmd_output_buffer: Queue):
         "Update loop for the InferenceUI."
-
-        if self.detection_logging_process is not None:  # We are currently running inference
+        if self.detection_logging_process is not None:  # currently running inference
             # Dump buffer into the cmd output text area
             for line in iter_except(cmd_output_buffer.get_nowait, Empty):
                 if line:
                     # Update command output with new line
                     self.add_cmd_output(line)
-            
-            # Check if process finished, if so
             returncode = self.detection_logging_process.poll()
             if returncode is not None:
                 if returncode == 0:
@@ -290,15 +290,7 @@ class GUI:
                     self.add_cmd_output("\nERROR: Inference job encountered an error. \n")
             
                 self.detection_logging_process = None
-
-        # Disable Run Inference button if there's an existing process running. - should be unnecesary now
-        # if self.detection_logging_process:
-        #     self.start_inference_button["state"]="disabled"
-        # else:
-        #     self.start_inference_button["state"]="enabled"
-
         # Run next update
         self.root.after(40, self.update, cmd_output_buffer)
-    
 
 GUI()
