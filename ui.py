@@ -20,7 +20,7 @@ class GUI:
         #tk vars
         self.model_name = "seventh.pt"
         self.root = tk.Tk()
-        self.root.title("Object Detector")
+        self.root.title("SeaScout Organisim Detector")
         self.root.geometry(str(min_width) + "x" + str(min_height))
         self.root.minsize(min_width, min_height)
         self.root.resizable(False, True)
@@ -118,8 +118,7 @@ class GUI:
                                    text="Kill Running Inference(s)",
                                    command=self.kill_inference)
         kill_inference.pack(expand=True, fill='x')
-        # make the frame height start out at exactly the right size
-
+        
         self.root.mainloop()
 
     def handle_model_input(self):
@@ -143,9 +142,6 @@ class GUI:
             self.detection_logging_process = subprocess.Popen(
                 args_list, preexec_fn=os.setsid)
             self.output_label_txt.set(self.determine_output_path())
-            # self.status_label_txt.set(
-            #     "Videos done processing, output available at latest folder in ./output"
-            # ) # -- why does this show up prematurely
             self.wipe_yolo_output()
 
     def kill_inference(self):
@@ -154,6 +150,7 @@ class GUI:
             os.killpg(os.getpgid(pid), signal.SIGKILL)
             self.status_label_txt.set("Inference killed early")
             self.wipe_yolo_output()
+            print("Inference killed by user: No excel file or resulting videos generated")
 
     def determine_output_path(self):
         if os.path.exists(os.path.join(os.path.dirname(__file__), "output")):
