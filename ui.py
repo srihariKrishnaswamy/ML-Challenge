@@ -163,7 +163,7 @@ class GUI:
         self.new_model_entry.delete(0, tk.END)
 
     def start_inference(self):
-        if len(self.entered_vids) > 0:
+        if self.detection_logging_process == None and len(self.entered_vids) > 0:
             self.status_label_txt.set(
                 "Videos being processed")
             args_list = ["python", "master_detect_data.py", "--model", "--videos"]
@@ -185,7 +185,8 @@ class GUI:
             os.killpg(os.getpgid(pid), signal.SIGKILL)
             self.status_label_txt.set("Inference killed early")
             self.wipe_yolo_output()
-            print("Inference killed by user: No excel file or resulting videos generated")
+            self.detection_logging_process = None
+            self.add_cmd_output("Inference killed by user: No excel file or resulting videos generated")
 
     def determine_output_path(self):
         if os.path.exists(os.path.join(os.path.dirname(__file__), "output")):
@@ -290,7 +291,7 @@ class GUI:
             
                 self.detection_logging_process = None
 
-        # Disable Run Inference button if there's an existing process running.
+        # Disable Run Inference button if there's an existing process running. - should be unnecesary now
         # if self.detection_logging_process:
         #     self.start_inference_button["state"]="disabled"
         # else:
