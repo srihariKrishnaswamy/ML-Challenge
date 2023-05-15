@@ -4,12 +4,23 @@ from PIL import ImageTk, Image
 import subprocess
 import signal
 import shutil
+import sys
+import threading
 
 image_path = os.path.join(os.path.dirname(__file__), "./assets/NewBanner.jpg")
 min_width = 600
 min_height = 570
 videos_path = os.path.join(os.path.dirname(__file__), "videos/")
 def_output_folder = "out"
+
+#code for terminal streaming adapted from https://stackoverflow.com/questions/665566/redirect-command-line-results-to-a-tkinter-gui
+def iter_except(function, exception):
+    """Works like builtin 2-argument `iter()`, but stops on `exception`."""
+    try:
+        while True:
+            yield function()
+    except exception:
+        return
 
 class GUI:
     def __init__(self):
@@ -118,7 +129,8 @@ class GUI:
                                    text="Kill Running Inference(s)",
                                    command=self.kill_inference)
         kill_inference.pack(expand=True, fill='x')
-        
+
+        self.root.protocol("WM_DELETE_WINDOW", self.quit)
         self.root.mainloop()
 
     def handle_model_input(self):
@@ -145,7 +157,7 @@ class GUI:
             self.wipe_yolo_output()
 
     def kill_inference(self):
-        if self.detection_logging_process.poll() is None:
+        if self.detection_logging_process != None and self.detection_logging_process.poll() is None:
             pid = self.detection_logging_process.pid
             os.killpg(os.getpgid(pid), signal.SIGKILL)
             self.status_label_txt.set("Inference killed early")
@@ -212,4 +224,9 @@ class GUI:
             os.remove("detections.xlsx")
         if os.path.exists("output_path_log.txt"):
             os.remove("output_path_log.txt")
+
+    def quit(self):
+        self.kill_inference()
+        self.root.destroy()
+
 GUI()
