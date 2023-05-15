@@ -5,17 +5,18 @@ import subprocess
 import signal
 import shutil
 import sys
-import threading
+from threading import Thread
+from queue import Empty, Queue
+import datetime
 
 image_path = os.path.join(os.path.dirname(__file__), "./assets/NewBanner.jpg")
 min_width = 600
-min_height = 570
+min_height = 600
 videos_path = os.path.join(os.path.dirname(__file__), "videos/")
 def_output_folder = "out"
 
 #code for terminal streaming adapted from https://stackoverflow.com/questions/665566/redirect-command-line-results-to-a-tkinter-gui
 def iter_except(function, exception):
-    """Works like builtin 2-argument `iter()`, but stops on `exception`."""
     try:
         while True:
             yield function()
@@ -37,6 +38,8 @@ class GUI:
         self.root.resizable(False, True)
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
+        #cmd remdering stuff
+        self.cmd_output_buffer = Queue(maxsize=1024)
 
         parent_frame = tk.Frame(self.root)
         parent_frame.grid(column=0, row=0, sticky="news")
@@ -117,15 +120,32 @@ class GUI:
         self.new_model_button = tk.Button(thirdframe, text="Enter New Model Name", command=self.handle_model_input)
         self.new_model_button.grid(row=1, column=1, sticky="ew")
 
-        fourthframe = tk.LabelFrame(parent_frame, pady=5)
+        # SHOWING STDOUT ON TKINTER
+        fourthframe = tk.LabelFrame(parent_frame, pady=10)
         fourthframe.grid(row=4, column=0, sticky="news")
+        fourthframe.columnconfigure(0, weight=1)
+        fourthframe.rowconfigure(0, weight=1)
+        parent_frame.rowconfigure(4, weight=1)
 
-        start_inference = tk.Button(fourthframe,
+        # self.cmd_label = tk.Label(fourthframe, text="   ", font=(None, 200))
+        # self.cmd_label.pack(ipadx=4, padx=4, ipady=4, pady=4, fill='both')
+
+        self.cmd_output_area = tk.Text(fourthframe, bd=0, height=6)
+        self.cmd_output_area.grid(column=1, row=1, sticky="news")
+        self.cmd_output_area.tag_config("errorstring", foreground="#CC0000")
+        self.cmd_output_area.tag_config("infostring", foreground="#008800")
+
+        self.update(self.cmd_output_buffer)
+
+        fifthframe = tk.LabelFrame(parent_frame, pady=5)
+        fifthframe.grid(row=5, column=0, sticky="news")
+
+        self.start_inference_button = tk.Button(fifthframe,
                                     text="Start Inference",
                                     command=self.start_inference)
-        start_inference.pack(expand=True, fill='x')
+        self.start_inference_button.pack(expand=True, fill='x')
 
-        kill_inference = tk.Button(fourthframe,
+        kill_inference = tk.Button(fifthframe,
                                    text="Kill Running Inference(s)",
                                    command=self.kill_inference)
         kill_inference.pack(expand=True, fill='x')
@@ -152,7 +172,10 @@ class GUI:
             print(args_list)
             self.entered_vids = []
             self.detection_logging_process = subprocess.Popen(
-                args_list, preexec_fn=os.setsid)
+                args_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, preexec_fn=os.setsid)
+            reader_thread = Thread(target=self.cmd_reader_thread, args=[self.cmd_output_buffer])
+            reader_thread.daemon = True # Flags as a daemon thread, so it will close at shutdown
+            reader_thread.start()
             self.output_label_txt.set(self.determine_output_path())
             self.wipe_yolo_output()
 
@@ -228,5 +251,53 @@ class GUI:
     def quit(self):
         self.kill_inference()
         self.root.destroy()
+
+    # Adapted from https://stackoverflow.com/questions/665566/redirect-command-line-results-to-a-tkinter-gui
+    def cmd_reader_thread(self, cmd_output_buffer: Queue):
+        "Reads the command output while the inference subprocess is running."
+        try:
+            with self.detection_logging_process.stdout as pipe:
+                for line in iter(pipe.readline, b''):
+                    cmd_output_buffer.put(line)
+        finally:
+            cmd_output_buffer.put(None)  # signal that the process is completed
+    
+    # Adapted from last year's deepsea-detector
+    def add_cmd_output(self, str, tags=None):
+        """Add a line of text to the cmd output. If tags is None then
+        self.get_default_tags will be used to assign tags to the line"""
+        self.cmd_output_area.insert(tk.INSERT, str, tags)
+        self.cmd_output_area.see(tk.END)
+
+    # Adapted from last year's deepsea-detector
+    def update(self, cmd_output_buffer: Queue):
+        "Update loop for the InferenceUI."
+
+        if self.detection_logging_process is not None:  # We are currently running inference
+            # Dump buffer into the cmd output text area
+            for line in iter_except(cmd_output_buffer.get_nowait, Empty):
+                if line:
+                    # Update command output with new line
+                    self.add_cmd_output(line)
+            
+            # Check if process finished, if so
+            returncode = self.detection_logging_process.poll()
+            if returncode is not None:
+                if returncode == 0:
+                    self.add_cmd_output("\nInference job finished successfully \n")
+                if self.detection_logging_process.poll() > 0:
+                    self.add_cmd_output("\nERROR: Inference job encountered an error. \n")
+            
+                self.detection_logging_process = None
+
+        # Disable Run Inference button if there's an existing process running.
+        # if self.detection_logging_process:
+        #     self.start_inference_button["state"]="disabled"
+        # else:
+        #     self.start_inference_button["state"]="enabled"
+
+        # Run next update
+        self.root.after(40, self.update, cmd_output_buffer)
+    
 
 GUI()
