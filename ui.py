@@ -169,6 +169,7 @@ class GUI:
         if self.detection_logging_process == None and len(self.entered_vids) > 0:
             self.status_label_txt.set(
                 "Videos being processed")
+            self.add_cmd_output("Starting up processing... \n")
             args_list = ["python", "master_detect_data.py", "--model", "--videos"]
             args_list.insert(3, self.model_name)
             args_list.extend(self.entered_vids)
@@ -189,7 +190,7 @@ class GUI:
             self.status_label_txt.set("Inference killed early")
             self.wipe_yolo_output()
             self.detection_logging_process = None
-            self.add_cmd_output("Inference killed by user: No excel file or resulting videos generated")
+            self.add_cmd_output("Inference killed by user: No excel file or resulting videos generated \n")
 
     def determine_output_path(self):
         if os.path.exists(os.path.join(os.path.dirname(__file__), "output")):
@@ -267,10 +268,9 @@ class GUI:
             cmd_output_buffer.put(None)  # signal that the process is completed
     
     # Adapted from last year's deepsea-detector
-    def add_cmd_output(self, str, tags=None):
-        """Add a line of text to the cmd output. If tags is None then
-        self.get_default_tags will be used to assign tags to the line"""
-        self.cmd_output_area.insert(tk.INSERT, str, tags)
+    def add_cmd_output(self, str):
+        """Add a line of text to the cmd output"""
+        self.cmd_output_area.insert(tk.INSERT, str)
         self.cmd_output_area.see(tk.END)
 
     # Adapted from last year's deepsea-detector
