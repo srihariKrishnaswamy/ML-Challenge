@@ -15,12 +15,15 @@ yolo_output_path_log = "output_path_log.txt"
 def determine_output_folder(): #assumes that the base output folder exists, returns path of new output folder
   output_list = os.listdir(output_folder)
   max = 0
+  print("output folders: " + str(output_list))
   for folder in output_list:
-      if len(folder) == len(def_output_folder):
-          max = 2
-      else:
-          folder_num = int(folder[3:len(folder)])
-          if folder_num >= max:
+      if folder.startswith(def_output_folder): # wanna be safe in case we hit .DS_Store
+        if len(folder) == len(def_output_folder):
+            if max < 2:
+              max = 2
+        else:
+            folder_num = int(folder[3:len(folder)])
+            if folder_num >= max:
               max = folder_num + 1
   if max == 0:
       new_output_folder = os.path.join(output_folder,def_output_folder + "/")

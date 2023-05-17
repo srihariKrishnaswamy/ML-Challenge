@@ -166,6 +166,7 @@ class GUI:
         self.new_model_entry.delete(0, tk.END)
 
     def start_inference(self):
+        self.clear_terminal_text()
         if self.detection_logging_process == None and len(self.entered_vids) > 0:
             self.status_label_txt.set(
                 "Videos being processed")
@@ -182,6 +183,9 @@ class GUI:
             reader_thread.start()
             self.output_label_txt.set(self.determine_output_path())
             self.wipe_yolo_output()
+        else:
+            self.add_cmd_output("No entered video files to process \n")
+
 
     def kill_inference(self):
         if self.detection_logging_process != None and self.detection_logging_process.poll() is None:
@@ -190,6 +194,7 @@ class GUI:
             self.status_label_txt.set("Inference killed early")
             self.wipe_yolo_output()
             self.detection_logging_process = None
+            self.clear_terminal_text()
             self.add_cmd_output("Inference killed by user: No excel file or resulting videos generated \n")
 
     def determine_output_path(self):
@@ -201,7 +206,7 @@ class GUI:
             for folder in output_list:
                 if len(folder) == len(def_output_folder):
                     max = 2
-                elif folder[3:len(folder)] == def_output_folder:
+                elif folder[3:len(folder)] == def_output_folder: #checks accouting for DS_Store
                     folder_num = int(folder[3:len(folder)])
                     if folder_num > max:
                         max = folder_num + 1
@@ -292,5 +297,8 @@ class GUI:
                 self.detection_logging_process = None
         # Run next update
         self.root.after(40, self.update, cmd_output_buffer)
+    
+    def clear_terminal_text(self):
+       self.cmd_output_area.delete('1.0', tk.END)
 
 GUI()

@@ -77,6 +77,11 @@ def determineOutputPath():
     print(addy)
     logOutputPath("./runs/detect/" + latest)
     return addy
+def get_class(index): #CHANGE
+   if index >= len(classes):
+      return "N/A" #has to be one token
+   else:
+      return classes[index]
 with open("sourceVid.txt", 'r') as sv:
   sourceVid = sv.readline()
 txts_path = determineOutputPath()
@@ -95,7 +100,7 @@ with open(second_output_file, 'w') as ff_out:
         tokens = line.split()
         source = tokens[0]
         frame = str(int(tokens[1]))
-        animal = classes[int(tokens[2])]
+        animal = get_class(int(tokens[2])) #CHANGE
         x_bound_left = str(tokens[3]) #x1
         y_bound_top = str(tokens[4]) #y1
         x_bound_right = str(float(tokens[5]) + float(tokens[3])) #x2

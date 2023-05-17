@@ -58,4 +58,3 @@ Pillow
 tk
 xlsxwriter
 openpyxl
-os #make sure to pip3 install
