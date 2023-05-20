@@ -181,10 +181,10 @@ class GUI:
             reader_thread = Thread(target=self.cmd_reader_thread, args=[self.cmd_output_buffer])
             reader_thread.daemon = True # Flags as a daemon thread, so it will close at shutdown
             reader_thread.start()
-            self.output_label_txt.set(self.determine_output_path())
-            self.wipe_yolo_output()
         else:
             self.add_cmd_output("No entered video files to process \n")
+        self.wipe_yolo_output()
+        self.output_label_txt.set(self.determine_output_path())
 
 
     def kill_inference(self):
@@ -198,27 +198,32 @@ class GUI:
             self.add_cmd_output("Inference killed by user: No excel file or resulting videos generated \n")
 
     def determine_output_path(self):
+        print("CALLED")
         if os.path.exists(os.path.join(os.path.dirname(__file__), "output")):
             output_list = os.listdir(
                 os.path.join(os.path.dirname(__file__), "output/"))
             max = 0
             print(output_list)
             for folder in output_list:
-                if len(folder) == len(def_output_folder):
+                if folder.startswith(def_output_folder) and max == 0:
                     max = 2
-                elif folder[3:len(folder)] == def_output_folder: #checks accouting for DS_Store
+                elif folder.startswith(def_output_folder) and folder != def_output_folder: #checks accounting for DS_Store
+                    print("curr folder: " + str(folder))
                     folder_num = int(folder[3:len(folder)])
                     if folder_num > max:
                         max = folder_num + 1
             if max == 0:
+                print(str(os.path.join(os.path.dirname(__file__), "output/out")))
                 return str(
-                    os.path.join(os.path.dirname(__file__), "output/out1"))
+                    os.path.join(os.path.dirname(__file__), "output/out"))
             else:
+                print(str(os.path.join(os.path.dirname(__file__), "output/" + def_output_folder + str(max)) + "/"))
                 return str(
                     os.path.join(os.path.dirname(__file__), "output/" +
                                  def_output_folder + str(max)) + "/")
         else:
-            return str(os.path.join(os.path.dirname(__file__), "output/out1"))
+            print(str(os.path.join(os.path.dirname(__file__), "output/out")))
+            return str(os.path.join(os.path.dirname(__file__), "output/out"))
 
     def determine_possible_videos(self):
         files = os.listdir(videos_path)
@@ -249,6 +254,8 @@ class GUI:
             self.status_label_txt.set("Invalid format (must be a video)")
 
     def wipe_yolo_output(self):
+        if os.path.exists("runs/detect"):
+            shutil.rmtree("runs/detect")
         if os.path.exists("runs"):
             shutil.rmtree("runs")
         if os.path.exists("sourceVid.txt"):

@@ -2,7 +2,6 @@ import glob
 import os
 import xlsxwriter
 import openpyxl
-
 first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
 classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology', 'chordate']
@@ -21,14 +20,16 @@ def fixFormat():
   os.remove(excelName)
   newBook = xlsxwriter.Workbook(excelName)
   newWorksheet = newBook.add_worksheet(worksheetName)
-  for index, entry in enumerate(newData): #writing it back
-    newWorksheet.write(index, 0, entry["vid"])
-    newWorksheet.write(index, 1, entry["frame"])
-    newWorksheet.write(index, 2, entry["class"])
-    newWorksheet.write(index, 3, entry["x_left"])
-    newWorksheet.write(index, 4, entry["x_right"])
-    newWorksheet.write(index, 5, entry["y_up"])
-    newWorksheet.write(index, 6, entry["y_low"])
+  bold = newBook.add_format({'bold': True})
+  for index, entry in enumerate(newData):
+        newWorksheet.write(index, 0, entry["vid"])
+        newWorksheet.write(index, 1, entry["frame"])
+        newWorksheet.write(index, 2, entry["class"])
+        newWorksheet.write(index, 3, entry["x_left"])
+        newWorksheet.write(index, 4, entry["x_right"])
+        newWorksheet.write(index, 5, entry["y_up"])
+        newWorksheet.write(index, 6, entry["y_low"])
+  newWorksheet.set_row(0, None, bold)
   newBook.close()
 def parseFrame(title):
     frameStr = ""
