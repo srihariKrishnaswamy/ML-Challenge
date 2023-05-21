@@ -61,3 +61,6 @@ if len(vids) > 0:
     vid = os.path.join(folders[i], os.listdir(folders[i])[0])
     shutil.move(vid, full_output_path)
     os.rmdir(folders[i])
+    
+if os.path.exists("runs"):
+  shutil.rmtree("runs")

@@ -2,6 +2,8 @@ import glob
 import os
 import xlsxwriter
 import openpyxl
+import shutil
+
 first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
 classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology', 'chordate']
@@ -105,7 +107,7 @@ with open(second_output_file, 'w') as ff_out:
       lines = pf_in.readlines()
       for line in lines:
         tokens = line.split()
-        source = tokens[0]
+        source = tokens[0][7:len(tokens[0])]
         frame = str(int(tokens[1]))
         animal = get_class(int(tokens[2])) #CHANGE
         x_bound_left = str(tokens[3]) #x1
