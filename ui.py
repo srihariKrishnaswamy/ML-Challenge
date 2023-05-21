@@ -145,7 +145,7 @@ class GUI:
 
         self.start_inference_button = tk.Button(fifthframe,
                                     text="Start Inference",
-                                    command=self.start_inference)
+                                    command=self.infer_and_delete_aux_files)
         self.start_inference_button.pack(expand=True, fill='x')
 
         kill_inference = tk.Button(fifthframe,
@@ -183,6 +183,9 @@ class GUI:
             reader_thread.start()
         else:
             self.add_cmd_output("No entered video files to process \n")
+
+    def infer_and_delete_aux_files(self):
+        self.start_inference()
         self.wipe_yolo_output()
         self.output_label_txt.set(self.determine_output_path())
 
@@ -205,12 +208,12 @@ class GUI:
             max = 0
             print(output_list)
             for folder in output_list:
-                if folder.startswith(def_output_folder) and max == 0:
+                if folder == def_output_folder and max == 0:
                     max = 2
-                elif folder.startswith(def_output_folder) and folder != def_output_folder: #checks accounting for DS_Store
+                elif folder.startswith(def_output_folder): #checks accounting for DS_Store
                     print("curr folder: " + str(folder))
                     folder_num = int(folder[3:len(folder)])
-                    if folder_num > max:
+                    if folder_num >= max:
                         max = folder_num + 1
             if max == 0:
                 print(str(os.path.join(os.path.dirname(__file__), "output/out")))
@@ -254,8 +257,6 @@ class GUI:
             self.status_label_txt.set("Invalid format (must be a video)")
 
     def wipe_yolo_output(self):
-        if os.path.exists("runs/detect"):
-            shutil.rmtree("runs/detect")
         if os.path.exists("runs"):
             shutil.rmtree("runs")
         if os.path.exists("sourceVid.txt"):
