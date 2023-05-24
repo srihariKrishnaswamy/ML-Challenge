@@ -58,3 +58,4 @@ Pillow
 tk
 xlsxwriter
 openpyxl
+threading
