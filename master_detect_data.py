@@ -15,6 +15,7 @@ yolo_output_path_log = "output_path_log.txt"
 event = threading.Event()
 args = parser.parse_args()
 vids = args.videos
+
 def determine_output_folder(): #assumes that the base output folder exists, returns path of new output folder
   output_list = os.listdir(output_folder)
   max = 0
@@ -43,33 +44,13 @@ def processing_block():
       proc2 = subprocess.Popen(['python', 'dataExp.py'])
       proc2.communicate()
   event.set()
-def management_block():
-  event.wait()
-  if len(vids) > 0:
-    if os.path.exists(output_folder) == False:
-      os.mkdir(output_folder)
-    full_output_path = determine_output_folder()
-    os.mkdir(full_output_path)
-    print("OUTPUT FOLDER: " + full_output_path)
-    # moving appropriate files
-    shutil.move("detections.xlsx", full_output_path)
-    folders = []
-    with open(yolo_output_path_log, 'r') as yolo_output:
-      for line in yolo_output.readlines():
-          folders.append(line.strip())
-    os.remove(yolo_output_path_log)
-    print("FOLDERS: ")
-    print(folders)
-    for i in range(len(folders)):
-      vid = os.path.join(folders[i], os.listdir(folders[i])[0])
-      shutil.move(vid, full_output_path)
-      os.rmdir(folders[i])
 if __name__ == "__main__":
   thread_one = threading.Thread(target=processing_block)
   thread_one.start()
   thread_one.join()
-  print("happening!!!!!!!")
+  # post processing
   if len(vids) > 0:
+    print("Organizing output files")
     if os.path.exists(output_folder) == False:
       os.mkdir(output_folder)
     full_output_path = determine_output_folder()
