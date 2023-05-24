@@ -7,7 +7,6 @@ import shutil
 from threading import Thread
 from queue import Empty, Queue
 import platform
-import psutil
 
 image_path = os.path.join(os.path.dirname(__file__), "./assets/NewBanner.jpg")
 min_width = 600
