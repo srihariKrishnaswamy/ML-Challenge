@@ -45,7 +45,7 @@ def processing_block():
       proc2.communicate()
   event.set()
 if __name__ == "__main__":
-  thread_one = threading.Thread(target=processing_block)
+  thread_one = threading.Thread(target=processing_block) #doing this because we need to make sure this runs before anything else
   thread_one.start()
   thread_one.join()
   # post processing
