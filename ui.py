@@ -179,7 +179,7 @@ class GUI:
             self.detection_logging_process = subprocess.Popen(
                 args_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, preexec_fn=os.setsid)
             reader_thread = Thread(target=self.cmd_reader_thread, args=[self.cmd_output_buffer])
-            reader_thread.daemon = True # Flags as a daemon thread, so it will close at shutdown
+            reader_thread.daemon = True 
             reader_thread.start()
         else:
             self.add_cmd_output("No entered video files to process \n")
