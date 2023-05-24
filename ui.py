@@ -10,7 +10,7 @@ from queue import Empty, Queue
 image_path = os.path.join(os.path.dirname(__file__), "./assets/NewBanner.jpg")
 min_width = 600
 min_height = 700
-videos_path = os.path.join(os.path.dirname(__file__), "videos/")
+videos_path = os.path.join(os.path.dirname(__file__), "videos")
 def_output_folder = "out"
 
 #code for terminal streaming adapted from https://stackoverflow.com/questions/665566/redirect-command-line-results-to-a-tkinter-gui
@@ -105,7 +105,7 @@ class GUI:
                                    pady=5)
         thirdframe.grid(row=3, column=0, sticky="ew")
 
-        self.model_location_txt = tk.StringVar(value="Model location: " + os.path.join(os.path.dirname(__file__), "iterations/" + self.model_name))
+        self.model_location_txt = tk.StringVar(value="Model location: " + os.path.join(os.path.dirname(__file__), os.path.join("iterations", self.model_name)))
         model_location = tk.Label(
             thirdframe,
             textvariable=self.model_location_txt,
@@ -158,9 +158,9 @@ class GUI:
 
     def handle_model_input(self):
         new_model = self.new_model_entry.get()
-        if new_model != "" and os.path.exists(os.path.join("./iterations", new_model)):
+        if new_model != "" and os.path.exists(os.path.join("iterations", new_model)):
             self.model_name = new_model
-            self.model_location_txt.set("Model location: " + os.path.join(os.path.dirname(__file__), "iterations/" + self.model_name))
+            self.model_location_txt.set("Model location: " + os.path.join(os.path.dirname(__file__), os.path.join("iterations", self.model_name)))
         else:
             self.model_location_txt.set("Model does not exist with name: " + str(new_model) + ", still using " + str(self.model_name))
         self.new_model_entry.delete(0, tk.END)
@@ -204,7 +204,7 @@ class GUI:
         print("CALLED")
         if os.path.exists(os.path.join(os.path.dirname(__file__), "output")):
             output_list = os.listdir(
-                os.path.join(os.path.dirname(__file__), "output/"))
+                os.path.join(os.path.dirname(__file__), "output"))
             max = 0
             print(output_list)
             for folder in output_list:
@@ -216,17 +216,16 @@ class GUI:
                     if folder_num >= max:
                         max = folder_num + 1
             if max == 0:
-                print(str(os.path.join(os.path.dirname(__file__), "output/out")))
+                print(str(os.path.join(os.path.dirname(__file__), os.path.join("output", "out"))))
                 return str(
-                    os.path.join(os.path.dirname(__file__), "output/out"))
+                    os.path.join(os.path.dirname(__file__), os.path.join("output", "out")))
             else:
-                print(str(os.path.join(os.path.dirname(__file__), "output/" + def_output_folder + str(max)) + "/"))
                 return str(
-                    os.path.join(os.path.dirname(__file__), "output/" +
-                                 def_output_folder + str(max)) + "/")
+                    os.path.join(os.path.dirname(__file__), os.path.join("output",
+                                 def_output_folder + str(max))))
         else:
-            print(str(os.path.join(os.path.dirname(__file__), "output/out")))
-            return str(os.path.join(os.path.dirname(__file__), "output/out"))
+            print(str(os.path.join(os.path.dirname(__file__), os.path.join("output", "out"))))
+            return str(os.path.join(os.path.dirname(__file__), os.path.join("output", "out")))
 
     def determine_possible_videos(self):
         files = os.listdir(videos_path)
