@@ -6,12 +6,15 @@ import signal
 import shutil
 from threading import Thread
 from queue import Empty, Queue
+import platform
+import psutil
 
 image_path = os.path.join(os.path.dirname(__file__), "./assets/NewBanner.jpg")
 min_width = 600
 min_height = 600
 videos_path = os.path.join(os.path.dirname(__file__), "videos")
 def_output_folder = "out"
+os_name = platform.system()
 
 #code for terminal streaming adapted from https://stackoverflow.com/questions/665566/redirect-command-line-results-to-a-tkinter-gui
 def iter_except(function, exception):
@@ -172,10 +175,13 @@ class GUI:
             args_list = ["python", "master_detect_data.py", "--model", "--videos"]
             args_list.insert(3, self.model_name)
             args_list.extend(self.entered_vids)
-            print(args_list)
             self.entered_vids = []
-            self.detection_logging_process = subprocess.Popen(
-                args_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, preexec_fn=os.setsid)
+            if os_name == 'Windows':
+                self.detection_logging_process = subprocess.Popen(
+                    args_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            else:
+                self.detection_logging_process = subprocess.Popen(
+                    args_list, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, preexec_fn=os.setsid)
             reader_thread = Thread(target=self.cmd_reader_thread, args=[self.cmd_output_buffer])
             reader_thread.daemon = True 
             reader_thread.start()
@@ -187,11 +193,16 @@ class GUI:
         self.wipe_yolo_output()
         self.output_label_txt.set(self.determine_output_path())
 
-
     def kill_inference(self):
         if self.detection_logging_process != None and self.detection_logging_process.poll() is None:
             pid = self.detection_logging_process.pid
-            os.killpg(os.getpgid(pid), signal.SIGKILL)
+            if os_name == 'Windows':
+                command = "taskkill /F /T /PID {}".format(pid)
+                subprocess.call(command, shell=False)
+                print("Windows terminate")
+            else: 
+                os.killpg(os.getpgid(pid), signal.SIGKILL)
+                print("Unix terminate")
             self.status_label_txt.set("Inference killed early")
             self.wipe_yolo_output()
             self.detection_logging_process = None
@@ -272,7 +283,7 @@ class GUI:
         "Reads the command output while the inference subprocess is running."
         try:
             with self.detection_logging_process.stdout as pipe:
-                for line in iter(pipe.readline, b''):
+                for line in iter(pipe.readline, ''):
                     cmd_output_buffer.put(line)
         finally:
             cmd_output_buffer.put(None)  # signal that the process is completed
