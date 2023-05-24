@@ -9,7 +9,7 @@ from queue import Empty, Queue
 
 image_path = os.path.join(os.path.dirname(__file__), "./assets/NewBanner.jpg")
 min_width = 600
-min_height = 700
+min_height = 600
 videos_path = os.path.join(os.path.dirname(__file__), "videos")
 def_output_folder = "out"
 
@@ -52,8 +52,7 @@ class GUI:
 
         topframe = tk.LabelFrame(parent_frame,
                                  text="Select Input Videos",
-                                 padx=30,
-                                 pady=10)
+                                 padx=30)
         topframe.columnconfigure(1, minsize=80)
         topframe.grid(row=1, column=0, sticky="ew")
 
@@ -87,8 +86,7 @@ class GUI:
 
         secondframe = tk.LabelFrame(parent_frame,
                                     text="Output",
-                                    padx=15,
-                                    pady=15)
+                                    padx=15)
         secondframe.grid(row=2, column=0, sticky="ew")
 
         self.output_label_txt = tk.StringVar(
