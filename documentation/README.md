@@ -62,4 +62,6 @@ After inference finishes, the detections are outputted to a spreadsheet located 
 
 Processed video files will also be available in the same folder:
 
+<img width="1093" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/39b7cc93-5871-48bc-9509-633246c5c0ef">
+
 ## Architecture Diagram
