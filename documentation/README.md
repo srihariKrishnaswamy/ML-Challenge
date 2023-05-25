@@ -8,8 +8,8 @@ Student Contributors
 ## Table of Contents
 - Problem Description
 - Data Description
-- Model 
-- UI
+- Object Detection Model 
+- UI Description
 - Results
 - Limitations
 - Ackowledgements and Resources
@@ -41,4 +41,13 @@ The classes that our project identifies are summarized below:
 We based our dataset off last year's deepsea-detector project's dataset. We ended up adding a lot of images since at first, our model would label almost everything as fish. This was because of the large concentration of the species in the previous dataset. We added images from the [World Register of Marine Species](www.marinespecies.org), and had to relabel some of their annotations using Robolfow. 
 Our model was overfitting for a while during our training iterations, and would still label almost everything as fish or cnidaria, but we were able to solve this issue by tweaking some training parameters, as discussed in the next section.
 
-## Model 
+## Object Detection Model 
+Our project uses a Yolov5 object detection model due to its popularity in the CV field and accuracy. We decided to train a pre-trained yolov5 model from FathomNet, specifically the [MBARI Monterey Bay Benthic YOLOv5x model](https://zenodo.org/record/5539915). This was because of the relatively small size of our dataset compared to those of other similar objectives, so we wanted to leverage the fact that the weights of the base model would already be tuned to detect underwater organisims. 
+
+The most accurate model we produced (located in the iterations folder of our project) was the result of us freezing (keeping the weights of) 18 layers of the MBARI model, and traing the rest of the layers with our data. It was important to find a good balance of layers to freeze and unfreeze, since unfreezing all of the layers could detract from accuracy since we would have abandonded the weights from the MBARI model. On the flip side, unfreezing less layers would allow our dataset to create less of an impact on the model's weights.
+
+Our model was trained for 14 epochs, and all of our training specs are available in our Model [Training Colab Notebook](https://github.com/srihariKrishnaswamy/ML-Challenge/blob/main/notebooks/SeaScout_Model_Train.ipynb). 
+
+As mentioned, we faced some issues with overfitting while trying to find the optimal model with our dataset, but this was mitigated mainly by changing our number of epochs in training. We strived to create the most accurate model we could with the data we could find, but there are still some inconsistencies with the model's accuracy. Regardless, we still belive it provides value with its detections and labels. 
+
+## UI Description
