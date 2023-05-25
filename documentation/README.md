@@ -1,7 +1,8 @@
 # SeaScout: An underwater organisim detector and classifier
 
 Student Contributors
-| Name | Role|
+
+| Name | Role |
 | Srihari Krishnaswamy | Model Training, User Interface, App Functionality |
 | Vivian Wang | Annotation, Model Training |
 
@@ -25,6 +26,7 @@ The competition was divided into two levels
 
 ## Data Description
 The classes that our project identifies are summarized below: 
+
 | Class | Description |
 | Annelids | Segmented worms |
 | Arthropods | Crustaceans (shrimp, crabs, copepods, etc.), pycnogonids (sea spiders) |
