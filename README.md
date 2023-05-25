@@ -25,6 +25,8 @@ To run the project's UI, run this command:
 
 ```python ui.py```
 
+<img width="945" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/b84b81ff-ba50-4b32-939e-3bd9afaa7b7b">
+
 After the UI starts, you are free to process videos. In order for videos to be processed, they have to be moved into the videos folder inside the project folder. Similarly, in order for a model to be used, it has to be in the iterations folder inside the main project folder. 
 The user can process multiple videos and log them onto the same excel file, which will appear in the latest folder inside the output folder after processing is finished. Processed videos will appear here as well. The user is free to kill the video processing at any point, but if this happens, no excel file or processed videos will be generated for the user to see.
 
