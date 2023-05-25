@@ -2,9 +2,8 @@
 
 Student Contributors
 
-| Name | Role |
-| Srihari Krishnaswamy | Model Training, User Interface, App Functionality |
-| Vivian Wang | Annotation, Model Training |
+- Srihari Krishnaswamy: Model Training, User Interface, App Functionality
+- Vivian Wang: Annotation, Model Training
 
 ## Table of Contents
 - Problem Description
@@ -28,6 +27,7 @@ The competition was divided into two levels
 The classes that our project identifies are summarized below: 
 
 | Class | Description |
+| -------- | -------- |
 | Annelids | Segmented worms |
 | Arthropods | Crustaceans (shrimp, crabs, copepods, etc.), pycnogonids (sea spiders) |
 | Cnidarians | Sea jellies, corals, anemones, siphonophores |
