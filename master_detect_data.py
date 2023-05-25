@@ -66,7 +66,7 @@ if __name__ == "__main__":
     print("FOLDERS: ")
     print(folders)
     for i in range(len(folders)):
-      if len(folders[i]) > 0:
+      if len(folders[i][0]) != None:
         vid = os.path.join(folders[i], os.listdir(folders[i])[0])
         shutil.move(vid, full_output_path)
         os.rmdir(folders[i])
