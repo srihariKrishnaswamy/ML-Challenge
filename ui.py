@@ -10,12 +10,12 @@ import platform
 
 image_path = os.path.join(os.path.dirname(__file__), "./assets/NewBanner.jpg")
 min_width = 600
-min_height = 600
+min_height = 630
 videos_path = os.path.join(os.path.dirname(__file__), "videos")
 def_output_folder = "out"
 os_name = platform.system()
 
-#code for terminal streaming adapted from https://stackoverflow.com/questions/665566/redirect-command-line-results-to-a-tkinter-gui
+#adapted from https://stackoverflow.com/questions/665566/redirect-command-line-results-to-a-tkinter-gui
 def iter_except(function, exception):
     try:
         while True:
@@ -38,7 +38,7 @@ class GUI:
         self.root.resizable(False, True)
         self.root.columnconfigure(0, weight=1)
         self.root.rowconfigure(0, weight=1)
-        #cmd remdering stuff
+        #Queue holding contents from STDOUT to be printed on UI
         self.cmd_output_buffer = Queue(maxsize=1024)
 
         parent_frame = tk.Frame(self.root)
@@ -52,6 +52,7 @@ class GUI:
         img_label = tk.Label(parent_frame, image=photo_img)
         img_label.grid(row=0, column=0)
 
+        #frame for video entering
         topframe = tk.LabelFrame(parent_frame,
                                  text="Select Input Videos",
                                  padx=30)
@@ -86,6 +87,7 @@ class GUI:
                                      wraplength=350)
         self.status_label.grid(row=3, column=0, sticky="w")
 
+        #Frame showing output path
         secondframe = tk.LabelFrame(parent_frame,
                                     text="Output",
                                     padx=15)
@@ -99,6 +101,7 @@ class GUI:
                                      wraplength=550)
         self.output_label.pack()
 
+        #Frame for changing model
         thirdframe = tk.LabelFrame(parent_frame,
                                    text="ML-Configuration",
                                    padx=10,
@@ -115,10 +118,10 @@ class GUI:
         self.new_model_entry = tk.Entry(thirdframe, width=40)
         self.new_model_entry.grid(row=1, column=0, sticky="ew")
 
-        self.new_model_button = tk.Button(thirdframe, text="Enter New Model Name", command=self.handle_model_input)
+        self.new_model_button = tk.Button(thirdframe, text="Change Model Name", command=self.handle_model_input)
         self.new_model_button.grid(row=1, column=1, sticky="ew")
 
-        # SHOWING STDOUT ON TKINTER
+        # Frame to show stdout on the UI
         fourthframe = tk.LabelFrame(parent_frame, text="Inference Output")
         fourthframe.grid(row=4, column=0, sticky="news")
         fourthframe.columnconfigure(0, weight=1)
@@ -140,6 +143,7 @@ class GUI:
 
         self.update(self.cmd_output_buffer)
 
+        # Frame for buttons to start and kill inference early
         fifthframe = tk.LabelFrame(parent_frame, pady=5)
         fifthframe.grid(row=5, column=0, sticky="news")
 
@@ -195,7 +199,7 @@ class GUI:
     def kill_inference(self):
         if self.detection_logging_process != None and self.detection_logging_process.poll() is None:
             pid = self.detection_logging_process.pid
-            if os_name == 'Windows':
+            if os_name == 'Windows': # have to do differently between OSes because of limitations in python os module
                 command = "taskkill /F /T /PID {}".format(pid)
                 subprocess.call(command, shell=False)
                 print("Windows terminate")
@@ -209,22 +213,18 @@ class GUI:
             self.add_cmd_output("Inference killed by user: No excel file or resulting videos generated \n")
 
     def determine_output_path(self):
-        print("CALLED")
         if os.path.exists(os.path.join(os.path.dirname(__file__), "output")):
             output_list = os.listdir(
                 os.path.join(os.path.dirname(__file__), "output"))
             max = 0
-            print(output_list)
             for folder in output_list:
                 if folder == def_output_folder and max == 0:
                     max = 2
-                elif folder.startswith(def_output_folder): #checks accounting for DS_Store
-                    print("curr folder: " + str(folder))
+                elif folder.startswith(def_output_folder): 
                     folder_num = int(folder[3:len(folder)])
                     if folder_num >= max:
                         max = folder_num + 1
             if max == 0:
-                print(str(os.path.join(os.path.dirname(__file__), os.path.join("output", "out"))))
                 return str(
                     os.path.join(os.path.dirname(__file__), os.path.join("output", "out")))
             else:
@@ -232,7 +232,6 @@ class GUI:
                     os.path.join(os.path.dirname(__file__), os.path.join("output",
                                  def_output_folder + str(max))))
         else:
-            print(str(os.path.join(os.path.dirname(__file__), os.path.join("output", "out"))))
             return str(os.path.join(os.path.dirname(__file__), os.path.join("output", "out")))
 
     def determine_possible_videos(self):
@@ -248,7 +247,6 @@ class GUI:
         self.names_entry.delete(0, tk.END)
         if entered_vid[-4:] == ".mp4":
             if os.path.exists(os.path.join(videos_path, entered_vid)):
-                print("Successful add!")
                 if entered_vid in self.entered_vids:
                     self.status_label_txt.set(
                         "Video already entered (Entered videos: " +
@@ -296,11 +294,9 @@ class GUI:
     # Adapted from last year's deepsea-detector
     def update(self, cmd_output_buffer: Queue):
         "Update loop for the InferenceUI."
-        if self.detection_logging_process is not None:  # currently running inference
-            # Dump buffer into the cmd output text area
+        if self.detection_logging_process is not None: 
             for line in iter_except(cmd_output_buffer.get_nowait, Empty):
                 if line:
-                    # Update command output with new line
                     self.add_cmd_output(line)
             returncode = self.detection_logging_process.poll()
             if returncode is not None:
@@ -308,9 +304,7 @@ class GUI:
                     self.add_cmd_output("\nInference job finished successfully \n")
                 if self.detection_logging_process.poll() > 0:
                     self.add_cmd_output("\nERROR: Inference job encountered an error. \n")
-            
                 self.detection_logging_process = None
-        # Run next update
         self.root.after(40, self.update, cmd_output_buffer)
     
     def clear_terminal_text(self):

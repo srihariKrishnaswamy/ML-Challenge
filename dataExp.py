@@ -2,7 +2,6 @@ import glob
 import os
 import xlsxwriter
 import openpyxl
-import shutil
 
 first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
@@ -12,7 +11,7 @@ excelName = "detections.xlsx"
 worksheetName = "detections_wksht"
 output_path_log = "output_path_log.txt"
 
-def fixFormat():
+def fixFormat(): # need to call this at the end to shift all cells up one row, by default processing multiple videos causes a 1 row buffer per video
   wb = openpyxl.load_workbook(excelName)
   ws = wb.active
   newData = []
@@ -57,7 +56,7 @@ def parseFrame(title):
         fs2 += frameStr[i]
     return fs2
 
-def logOutputPath(outputPath): #logs yolo's output path to a txt file so we can go through each folder, grab the video and delete it
+def logOutputPath(outputPath): #logs yolo's output path to a txt file so we can go through each folder, grab the video and delete it - this file will be deleted when not needed
    if os.path.exists(output_path_log):
       with open(output_path_log, 'a') as out:
          out.write(outputPath + "\n")
@@ -85,9 +84,9 @@ def determineOutputPath():
     logOutputPath("./runs/detect/" + latest)
     return addy
 
-def get_class(index): #CHANGE
+def get_class(index): # this method accounts for the use of models with different weights - if something is classified as an invalid class, we log it as unidentified biology
    if index >= len(classes):
-      return "N/A" #has to be one token
+      return "Unidentified-biology"
    else:
       return classes[index]
    
@@ -109,7 +108,7 @@ with open(second_output_file, 'w') as ff_out:
         tokens = line.split()
         source = tokens[0][7:len(tokens[0])]
         frame = str(int(tokens[1]))
-        animal = get_class(int(tokens[2])) #CHANGE
+        animal = get_class(int(tokens[2])) 
         x_bound_left = str(tokens[3]) #x1
         y_bound_top = str(tokens[4]) #y1
         x_bound_right = str(float(tokens[5]) + float(tokens[3])) #x2
@@ -134,7 +133,7 @@ with open(second_output_file, 'r') as sf_in:
         data.append(dict)
 sortedData = sorted(data, key=lambda k: int(k['frame'])) #sorting data by frame 
 # write to excel from list of dictionaries
-if os.path.exists(excelName):
+if os.path.exists(excelName): # if this is not the first video we're processing in this cycle
     # read in all the data from this into a list of dictionaries
     # delete this excel file, having stored all the data in the dicts
     # write all of them to a new excel file with the same name 
@@ -161,7 +160,7 @@ if os.path.exists(excelName):
           worksheet.write(index+1, 5, entry["y_up"])
           worksheet.write(index+1, 6, entry["y_low"])
     workbook.close()
-else:
+else: # if this is the first video we are processing in this cycle
     workbook = xlsxwriter.Workbook(excelName)
     worksheet = workbook.add_worksheet(worksheetName)
     worksheet.write(0,0,"Source Video")

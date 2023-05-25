@@ -16,12 +16,11 @@ event = threading.Event()
 args = parser.parse_args()
 vids = args.videos
 
-def determine_output_folder(): #assumes that the base output folder exists, returns path of new output folder
+def determine_output_folder(): #returns path of new output folder
   output_list = os.listdir(output_folder)
   max = 0
-  print("output folders: " + str(output_list))
   for folder in output_list:
-      if folder.startswith(def_output_folder): # wanna be safe in case we hit .DS_Store
+      if folder.startswith(def_output_folder): 
         if len(folder) == len(def_output_folder):
             if max < 2:
               max = 2
@@ -30,9 +29,9 @@ def determine_output_folder(): #assumes that the base output folder exists, retu
             if folder_num >= max:
               max = folder_num + 1
   if max == 0:
-      new_output_folder = os.path.join(output_folder,def_output_folder + "/")
+      new_output_folder = os.path.join(output_folder,def_output_folder)
   else:
-      new_output_folder = os.path.join(output_folder,def_output_folder + str(max) + "/")
+      new_output_folder = os.path.join(output_folder, def_output_folder + str(max))
   return new_output_folder
 def processing_block():
   model = os.path.join("./iterations/", args.model)
@@ -45,12 +44,11 @@ def processing_block():
       proc2.communicate()
   event.set()
 if __name__ == "__main__":
-  thread_one = threading.Thread(target=processing_block) #doing this because we need to make sure this runs before anything else
+  thread_one = threading.Thread(target=processing_block) #we need to make sure this runs before anything else
   thread_one.start()
   thread_one.join()
   # post processing
   if len(vids) > 0:
-    print("Organizing output files")
     if os.path.exists(output_folder) == False:
       os.mkdir(output_folder)
     full_output_path = determine_output_folder()
@@ -63,13 +61,9 @@ if __name__ == "__main__":
       for line in yolo_output.readlines():
           folders.append(line.strip())
     os.remove(yolo_output_path_log)
-    print("FOLDERS: ")
-    print(folders)
     for i in range(len(folders)):
-      if len(folders[i][0]) != None:
         vid = os.path.join(folders[i], os.listdir(folders[i])[0])
         shutil.move(vid, full_output_path)
         os.rmdir(folders[i])
-  print("threading done")
   if os.path.exists("runs"):
     shutil.rmtree("runs")
