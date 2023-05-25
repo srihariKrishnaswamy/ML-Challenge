@@ -54,3 +54,7 @@ As mentioned, we faced some issues with overfitting while trying to find the opt
 The UI for SeaScout was written with Tkinter. The UI for our project allows the user to enter multiple videos to process, and logs the results for the detections for each video on one spreadsheet. After a sequence of videos are processed, the processed videos with bounding boxes are available in the latest folder in the output folder, along with the spreadsheet. The user can cancel video processing at any time, but if this is done, no spreadsheet or videos with bounding boxes will be generated. It is worth noting that the same detection and logging process can be run via the Terminal/CLI, and that the UI is simply a wrapper for this.
 
 <img width="984" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/e3675a26-b0ac-4e41-9f90-6772d0339726">
+
+After inference finishes, the detections are outputted to a spreadsheet located in the latest folder inside the output folder: 
+
+<img width="1727" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/67c26a4f-2e9a-4829-99c1-4843d6e1b2cd">
