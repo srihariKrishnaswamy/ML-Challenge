@@ -118,7 +118,7 @@ class GUI:
         self.new_model_entry = tk.Entry(thirdframe, width=40)
         self.new_model_entry.grid(row=1, column=0, sticky="ew")
 
-        self.new_model_button = tk.Button(thirdframe, text="Change Model Name", command=self.handle_model_input)
+        self.new_model_button = tk.Button(thirdframe, text="Change Model", command=self.handle_model_input)
         self.new_model_button.grid(row=1, column=1, sticky="ew")
 
         # Frame to show stdout on the UI
