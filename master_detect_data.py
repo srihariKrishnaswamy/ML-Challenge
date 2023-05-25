@@ -66,9 +66,10 @@ if __name__ == "__main__":
     print("FOLDERS: ")
     print(folders)
     for i in range(len(folders)):
-      vid = os.path.join(folders[i], os.listdir(folders[i])[0])
-      shutil.move(vid, full_output_path)
-      os.rmdir(folders[i])
+      if len(folders[i]) > 0:
+        vid = os.path.join(folders[i], os.listdir(folders[i])[0])
+        shutil.move(vid, full_output_path)
+        os.rmdir(folders[i])
   print("threading done")
   if os.path.exists("runs"):
     shutil.rmtree("runs")
