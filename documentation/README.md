@@ -57,4 +57,6 @@ The UI for SeaScout was written with Tkinter. The UI for our project allows the 
 
 After inference finishes, the detections are outputted to a spreadsheet located in the latest folder inside the output folder: 
 
+<img width="1727" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/608be8b5-1cf0-4b07-823f-46dc9025fcff">
+
 <img width="1727" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/771a87da-2a38-4f97-976c-52f482019f21">
