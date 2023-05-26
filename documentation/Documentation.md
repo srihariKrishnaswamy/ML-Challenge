@@ -82,8 +82,8 @@ Additionally, we want to ackolwledge our use of Ultralytics Yolov5. The detectio
 
 Jocher, Glenn. "yolov5." GitHub, 2023, https://github.com/ultralytics/yolov5
 
-ShrimpCryptid. "deepsea-detector." GitHub, github.com/ShrimpCryptid/deepsea-detector/
+ShrimpCryptid. "deepsea-detector." GitHub, https://github.com/ShrimpCryptid/deepsea-detector
 
-"The Main Differences Between Arthropods and Cnidarians." Biobubble Pets, biobubblepets.com/the-main-differences-between-arthropods-and-cnidarians/
+"The Main Differences Between Arthropods and Cnidarians." Biobubble Pets, https://biobubblepets.com/the-main-differences-between-arthropods-and-cnidarians
 
 ## Video Demo and Explaination
