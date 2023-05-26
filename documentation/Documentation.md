@@ -66,19 +66,19 @@ Processed video files will also be available in the same folder.
 <img width="658" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/b960c7aa-5783-4556-b76d-d3cd3c2da329">
 
 ## Results
-Our model performs well with detecting organisims, but generally struggles in classifying them correctly. In the future, we would try to collect even more data to improve the dataset even further to mitigate this issue. Below is a video of the model's annotations of the full dive: 
+Our model performs well with detecting organisims, but generally struggles in classifying them correctly. In the future, we would try to collect even more data to improve the dataset even further to mitigate this issue. Below is a video of the model's annotations of the seafloor video: 
 
 Here are the training loss graphics for our model: 
 
 ## Limitations and Extensions
 One reason for the model's innacuracy was the sheer amount of diversity present in each class. Multiple organisims that look very different were part of the same categories, something that would directly detract from model accuracy. 
 
-Of course, with more time, we would expand our dataset even further, however it is worth noting that annotating images by and and finding correctly annotated images is still difficult. 
+Of course, with more time, we would expand our dataset even further, however it is worth noting that annotating images by and finding correctly annotated images is still difficult. 
 
 ## Ackowledgements and Resources
-We would like to thank MATE and NOAA Ocean Exploration for hosting the ML Challenge. We would also like to thank FathomNet and NOAA Ocean Exploration for providng data. Additionally, we would also like to thank Peyton Lee and the team from last year's UWROV deepsea-detector project for advice, providing their dataset for us to build on. In this year's project, we used a similar structure to them for documentation and the notebook to train our model, as well as the code for showing standard output to the UI. 
+We would like to thank MATE and NOAA Ocean Exploration for hosting the ML Challenge. We would also like to thank FathomNet and NOAA Ocean Exploration for providing data. Additionally, we would also like to thank Peyton Lee and the team from last year's UWROV deepsea-detector project for advice, providing their dataset for us to build on. In this year's project, we used a similar structure to them for documentation and the notebook to train our model, as well as the code for showing standard output to the UI.
 
-Additionally, we want to ackolwledge our use of Ultralytics Yolov5. The detection.py script is sourced from the [Yolov5 repository](https://github.com/ultralytics/yolov5) and the other python files in the project's subfolders are from the repository as well.
+Additionally, we want to ackolwledge our use of Ultralytics Yolov5. The detection.py script is sourced from the [Yolov5 repository](https://github.com/ultralytics/yolov5) and the other python files in the project's subfolders are from the repository as well (these are all dependencies of detect.py).
 
 Jocher, Glenn. "yolov5." GitHub, 2023, https://github.com/ultralytics/yolov5
 
