@@ -44,6 +44,7 @@ Dataset: [Roboflow project](https://app.roboflow.com/uwrov-2023-ml-challenge/)
 
 Model Training Notebook: [Colab Notebook](https://github.com/srihariKrishnaswamy/ML-Challenge/blob/main/notebooks/SeaScout_Model_Train.ipynb)
 
+Additional in-Depth Documentation: [Documentation](https://github.com/srihariKrishnaswamy/ML-Challenge/blob/main/documentation/Documentation.md)
 ### Acknowledgements: 
 We would like to thank the following people and organizations: 
 - [MATE](https://materovcompetition.org/) and [NOAA Ocean Exploration](https://oceanexplorer.noaa.gov/) for hosting this competition
