@@ -50,7 +50,6 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
 
-
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model path or triton URL
@@ -97,9 +96,11 @@ def run(
     (save_dir / 'labels' if save_txt else save_dir).mkdir(parents=True, exist_ok=True)  # make dir
 
     # Load model
-    device = select_device(device)
-    model = DetectMultiBackend(weights, device=device, dnn=dnn, data=data, fp16=half)
-    stride, names, pt = model.stride, model.names, model.pt
+    device = select_device(device) # selects GPU or CPU on which detection is run
+    # Below: the weights to use for the model, as well as settings
+    model = DetectMultiBackend(weights, device=device, dnn=dnn, data=data, fp16=half) 
+    # Below: configuring downsampling factor, names of classes and model
+    stride, names, pt = model.stride, model.names, model.pt 
     imgsz = check_img_size(imgsz, s=stride)  # check image size
 
     # Dataloader
@@ -117,21 +118,19 @@ def run(
     # Run inference
     model.warmup(imgsz=(1 if pt or model.triton else bs, 3, *imgsz))  # warmup
     seen, windows, dt = 0, [], (Profile(), Profile(), Profile())
-    for path, im, im0s, vid_cap, s in dataset:
-        with dt[0]:
+    for path, im, im0s, vid_cap, s in dataset: # looping over the dataset
+        with dt[0]: # below: converting the image to a pytorch tensor so it can be processed
             im = torch.from_numpy(im).to(model.device)
             im = im.half() if model.fp16 else im.float()  # uint8 to fp16/32
-            im /= 255  # 0 - 255 to 0.0 - 1.0
-            if len(im.shape) == 3:
+            im /= 255  # 0 - 255 to 0.0 - 1.0: normalizing the tensor
+            if len(im.shape) == 3: # checking for 3D image
                 im = im[None]  # expand for batch dim
-
-        # Inference
         with dt[1]:
             visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if visualize else False
+            # below: performing inference using Yolov5 model on the image tensor
             pred = model(im, augment=augment, visualize=visualize)
-
-        # NMS
         with dt[2]:
+            # below: applies non-max-suppresion algorithm to filter redundant bounding box predictions
             pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det=max_det)
 
         # Second-stage classifier (optional)
@@ -169,7 +168,6 @@ def run(
                         line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
                         with open(f'{txt_path}.txt', 'a') as f:
                             f.write(('%g ' * len(line)).rstrip() % line + '\n')
-                            print(('%g ' * len(line)).rstrip() % line + '\n') #DEBUG
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')

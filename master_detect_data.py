@@ -38,8 +38,11 @@ def processing_block():
   if len(vids) > 0:
     for video in vids:
       print("Current Video: " + video)
+      # running detection process: –save-txt option allows yolov5 to write individual detections to .txt files, which the logging 
+      # script uses to log to excel
       proc1 = subprocess.Popen(['python', 'detect.py', '--weights', model, '--source', os.path.join("videos/", video), '--save-txt'])
       proc1.communicate()
+      # running logging process
       proc2 = subprocess.Popen(['python', 'dataExp.py'])
       proc2.communicate()
   event.set()

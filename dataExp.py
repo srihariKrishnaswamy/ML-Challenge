@@ -5,7 +5,7 @@ import openpyxl
 
 first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
-classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology', 'chordate']
+classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology']
 sourceVid = ""
 excelName = "detections.xlsx"
 worksheetName = "detections_wksht"
@@ -84,7 +84,7 @@ def determineOutputPath():
     logOutputPath("./runs/detect/" + latest)
     return addy
 
-def get_class(index): # this method accounts for the use of models with different weights - if something is classified as an invalid class, we log it as unidentified biology
+def get_class(index): # this accounts for the use of models with different classes so the program can run on different models without an error - if something is classified as an invalid class, we log it as unidentified biology
    if index >= len(classes):
       return "Unidentified-biology"
    else:
@@ -141,7 +141,7 @@ if os.path.exists(excelName): # if this is not the first video we're processing 
     book = openpyxl.load_workbook(excelName)
     sheet = book.active
     for row in sheet.iter_rows(values_only=True):
-        if row[0] != None: #to prevent empty rows at the top
+        if row[0] != None:
           obj = {"vid": row[0], "frame": row[1], "class": row[2], "x_left": row[3], "x_right": row[4], "y_up": row[5], "y_low": row[6]}
           prevData.append(obj) #the whole row of data
         else:
