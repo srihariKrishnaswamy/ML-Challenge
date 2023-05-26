@@ -65,4 +65,4 @@ Processed video files will also be available in the same folder:
 <img width="1093" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/39b7cc93-5871-48bc-9509-633246c5c0ef">
 
 ## Architecture Diagram
-<img width="660" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/9b4a7eb6-c888-4eb4-8183-6ec44661e2ec">
+<img width="638" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/e9cff3e0-3a9e-4c69-aefc-c1a57f99c7c8">
