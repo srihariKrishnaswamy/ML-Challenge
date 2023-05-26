@@ -76,9 +76,12 @@ One reason for the model's innacuracy was the sheer amount of diversity present 
 Of course, with more time, we would expand our dataset even further, however it is worth noting that annotating images by and and finding correctly annotated images is still difficult. 
 
 ## Ackowledgements and Resources
-We would like to thank MATE and NOAA Ocean Exploration for hosting the ML Challenge. We would also like to thank FathomNet and NOAA Ocean Exploration for providng data. Additionally, we would also like to thank Peyton Lee and the team from last year's UWROV deepsea-detector project for advice, providing their dataset for us to build on. In this year's project, we used a similar structure to them for documentation and the notebook to train our model, as well as the code for showing standard output to the UI.
+We would like to thank MATE and NOAA Ocean Exploration for hosting the ML Challenge. We would also like to thank FathomNet and NOAA Ocean Exploration for providng data. Additionally, we would also like to thank Peyton Lee and the team from last year's UWROV deepsea-detector project for advice, providing their dataset for us to build on. In this year's project, we used a similar structure to them for documentation and the notebook to train our model, as well as the code for showing standard output to the UI. 
 
-ShrimpCryptid. "deepsea-detector." GitHub, github.com/ShrimpCryptid/deepsea-detector/.
-"The Main Differences Between Arthropods and Cnidarians." Biobubble Pets, biobubblepets.com/the-main-differences-between-arthropods-and-cnidarians/. 
+Additionally, we want to ackolwledge our use of Ultralytics Yolov5. The detection.py script is sourced from the [Yolov5 repository](https://github.com/ultralytics/yolov5) and the other python files in the project's subfolders are from the repository as well.
+
+Jocher, Glenn. "yolov5." GitHub, 2023, https://github.com/ultralytics/yolov5
+ShrimpCryptid. "deepsea-detector." GitHub, github.com/ShrimpCryptid/deepsea-detector/
+"The Main Differences Between Arthropods and Cnidarians." Biobubble Pets, biobubblepets.com/the-main-differences-between-arthropods-and-cnidarians/
 
 ## Video Demo and Explaination
