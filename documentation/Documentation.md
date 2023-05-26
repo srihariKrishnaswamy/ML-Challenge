@@ -1,4 +1,4 @@
-# SeaScout: An Underwater Organisim Detector and Classifier
+# SeaScout: An Underwater Organsim Detector and Classifier
 
 Student Contributors
 
