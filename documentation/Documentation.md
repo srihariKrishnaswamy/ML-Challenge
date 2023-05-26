@@ -81,7 +81,9 @@ We would like to thank MATE and NOAA Ocean Exploration for hosting the ML Challe
 Additionally, we want to ackolwledge our use of Ultralytics Yolov5. The detection.py script is sourced from the [Yolov5 repository](https://github.com/ultralytics/yolov5) and the other python files in the project's subfolders are from the repository as well.
 
 Jocher, Glenn. "yolov5." GitHub, 2023, https://github.com/ultralytics/yolov5
+
 ShrimpCryptid. "deepsea-detector." GitHub, github.com/ShrimpCryptid/deepsea-detector/
+
 "The Main Differences Between Arthropods and Cnidarians." Biobubble Pets, biobubblepets.com/the-main-differences-between-arthropods-and-cnidarians/
 
 ## Video Demo and Explaination
