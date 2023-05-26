@@ -14,7 +14,7 @@ Student Contributors
 - Results
 - Limitations
 - Ackowledgements and Resources
-- Video Demo/Explaination
+- Video Demo and Explaination
 
 ## Problem Description
 We built our model and the sorrounding scripts to fulfill [MATE's 2023 Computer Coding Challenge](https://files.materovcompetition.org/2023/2023-OER-MATE-ROV-Computer-Coding-Challenge_FINAL.pdf).
@@ -40,7 +40,7 @@ The classes that our project identifies are summarized below:
 | Unidentified Biology | Unidentified Biology |
 
 We based our dataset off last year's deepsea-detector project's dataset. We ended up adding a lot of images since at first, our model would label almost everything as fish. This was because of the large concentration of the species in the previous dataset. We added images from the [World Register of Marine Species](www.marinespecies.org), and had to relabel some of their annotations using Robolfow. 
-Our model was overfitting for a while during our training iterations, and would still label almost everything as fish or cnidaria, but we were able to solve this issue by tweaking some training parameters, as discussed in the next section.
+Our model was overfitting for a while during our training iterations, and would still label almost everything as fish or arthopods, but we were able to solve this issue by tweaking some training parameters, as discussed in the next section.
 
 ## Object Detection Model 
 Our project uses a Yolov5 object detection model due to its popularity in the CV field and accuracy. We decided to train a pre-trained yolov5 model from FathomNet, specifically the [MBARI Monterey Bay Benthic YOLOv5x model](https://zenodo.org/record/5539915). This was because of the relatively small size of our dataset compared to those of other similar objectives, so we wanted to leverage the fact that the weights of the base model would already be tuned to detect underwater organisims. 
@@ -64,3 +64,21 @@ Processed video files will also be available in the same folder.
 
 ## Architecture Diagram
 <img width="658" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/b960c7aa-5783-4556-b76d-d3cd3c2da329">
+
+## Results
+Our model performs well with detecting organisims, but generally struggles in classifying them correctly. In the future, we would try to collect even more data to improve the dataset even further to mitigate this issue. Below is a video of the model's annotations of the full dive: 
+
+Here are the training loss graphics for our model: 
+
+## Limitations and Extensions
+One reason for the model's innacuracy was the sheer amount of diversity present in each class. Multiple organisims that look very different were part of the same categories, something that would directly detract from model accuracy. 
+
+Of course, with more time, we would expand our dataset even further, however it is worth noting that annotating images by and and finding correctly annotated images is still difficult. 
+
+## Ackowledgements and Resources
+We would like to thank MATE and NOAA Ocean Exploration for hosting the ML Challenge. We would also like to thank FathomNet and NOAA Ocean Exploration for providng data. Additionally, we would also like to thank Peyton Lee and the team from last year's UWROV deepsea-detector project for advice, providing their dataset for us to build on. In this year's project, we used a similar structure to them for documentation and the notebook to train our model, as well as the code for showing standard output to the UI.
+
+ShrimpCryptid. "deepsea-detector." GitHub, github.com/ShrimpCryptid/deepsea-detector/.
+"The Main Differences Between Arthropods and Cnidarians." Biobubble Pets, biobubblepets.com/the-main-differences-between-arthropods-and-cnidarians/. 
+
+## Video Demo and Explaination
