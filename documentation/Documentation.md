@@ -5,17 +5,6 @@ Student Contributors
 - Srihari Krishnaswamy: Model Training, User Interface, App Functionality
 - Vivian Wang: Annotation, Model Training
 
-## Table of Contents
-- Problem Description
-- Data Description
-- Object Detection Model 
-- UI Description
-- Architecture Diagram
-- Results
-- Limitations
-- Ackowledgements and Resources
-- Video Demo and Explaination
-
 ## Problem Description
 We built our model and the sorrounding scripts to fulfill [MATE's 2023 Computer Coding Challenge](https://files.materovcompetition.org/2023/2023-OER-MATE-ROV-Computer-Coding-Challenge_FINAL.pdf).
 This tasked us with identifiying marine organisims in seafloor footage collected by Remotely Operated Vehicles.
