@@ -86,7 +86,7 @@ def determineOutputPath():
 
 def get_class(index): # this accounts for the use of models with different classes so the program can run on different models without an error - if something is classified as an invalid class, we log it as unidentified biology
    if index >= len(classes):
-      return "Unidentified-biology"
+      return "Unidentified-biology" + str(index)
    else:
       return classes[index]
    
