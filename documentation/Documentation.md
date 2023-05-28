@@ -55,9 +55,11 @@ Processed video files will also be available in the same folder.
 <img width="658" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/b960c7aa-5783-4556-b76d-d3cd3c2da329">
 
 ## Results
-Our model performs well with detecting organisims, but generally struggles in classifying them correctly. In the future, we would try to collect even more data to improve the dataset even further to mitigate this issue. Below is a video of the model's annotations of the seafloor video: 
+Our model performs well with detecting organisims, but generally struggles in classifying them correctly. Lots of iteration and experimentation in model training led to us developing more optimal training specs to get better results, but these issues ultimately still persist. In the future, we would try to collect even more data to improve the dataset even further to mitigate this issue. Below is a video of the model's annotations of the seafloor video: 
 
 Here are the training loss graphics for our model: 
+
+![image](https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/7623de78-5be0-4c40-95ca-2dc8e82387e0)
 
 ## Limitations and Extensions
 One reason for the model's innacuracy was the sheer amount of diversity present in each class. Multiple organisims that look very different were part of the same categories, something that would directly detract from model accuracy. 
