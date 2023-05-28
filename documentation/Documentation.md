@@ -65,6 +65,9 @@ Here is a ground truth labels (left) v. model predictions image for one batch of
 
 <img width="1230" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/2358f6f9-5b92-4b7c-ac84-0978f1434afb">
 
+Finally, here is a confusion matrix showing accuracy between classes:
+![image](https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/baf2c2d3-f16a-4c5d-ad9e-18466f1205d2)
+
 ## Limitations and Extensions
 One reason for the model's innacuracy was the sheer amount of diversity present in each class. Multiple organisims that look very different were part of the same categories, something that would directly detract from model accuracy. 
 
