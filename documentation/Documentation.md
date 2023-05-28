@@ -61,6 +61,11 @@ Here are the training loss graphics for our model:
 
 ![image](https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/7623de78-5be0-4c40-95ca-2dc8e82387e0)
 
+Here is a ground truth labels (left) v. model predictions image for one batch of images:
+
+![image](https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/692a20f9-2240-41f3-8e3d-16e44fe60f91)
+![image](https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/dce342aa-335f-42ba-99df-e5bc10b08569)
+
 ## Limitations and Extensions
 One reason for the model's innacuracy was the sheer amount of diversity present in each class. Multiple organisims that look very different were part of the same categories, something that would directly detract from model accuracy. 
 
