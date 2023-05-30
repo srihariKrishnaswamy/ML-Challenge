@@ -78,6 +78,8 @@ One other reason for the model's inaccuracy was the sheer amount of diversity pr
 
 Of course, with more time, we would expand our dataset even further, however it is worth noting that annotating images by and finding correctly annotated images is still difficult. 
 
+## [Video Demo and Explaination](https://drive.google.com/file/d/1msMNRon4GlisfqJy3pbMHG69lDG3-QTw/view?usp=sharing)
+
 ## Ackowledgements and Resources
 We would like to thank MATE and NOAA Ocean Exploration for hosting the ML Challenge. We would also like to thank FathomNet and NOAA Ocean Exploration for providing data. Additionally, we would also like to thank Peyton Lee and the team from last year's UWROV deepsea-detector project for advice, providing their dataset for us to build on. In this year's project, we used a similar structure to them for documentation and the notebook to train our model, as well as the code for showing standard output to the UI.
 
@@ -89,4 +91,4 @@ ShrimpCryptid. "deepsea-detector." GitHub, https://github.com/ShrimpCryptid/deep
 
 "The Main Differences Between Arthropods and Cnidarians." Biobubble Pets, https://biobubblepets.com/the-main-differences-between-arthropods-and-cnidarians
 
-## Video Demo and Explaination
+
