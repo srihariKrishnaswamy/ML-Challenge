@@ -35,9 +35,11 @@ The UI for our project is a wrapper for a python script which invokes object det
 
 ```python master_detect_data.py --videos FIRST_VIDEO_HERE.mp4 SECOND_VIDEO_HERE.mp4 --model MODEL_HERE.pt```
 
-Just as in the UI, the entered files must be valid and in the videos or iterations folder respectively. For instance, a valid statement running the script would be:
+Just as in the UI, the entered videos and model must be valid and in the videos or iterations (NOT MODELS) folder respectively. For instance, a valid statement running the script would be:
 
-```python master_detect_data.py --videos descent.mp4 seafloor.mp4 --model yolov5s.pt```
+```python master_detect_data.py --videos descent.mp4 seafloor.mp4 --model SeaScout.pt```
+
+since the file SeaScout.pt is in the iterations folder, and each of the .mp4 files are in the videos folder.
 
 ### Resources:
 Dataset: [Roboflow project](https://app.roboflow.com/uwrov-2023-ml-challenge/)
