@@ -63,13 +63,16 @@ Processed video files will also be available in the same folder.
 Our model performs well with detecting organisims, but generally struggles in classifying them correctly. Lots of iteration and experimentation in model training led to us developing more optimal training specs to get better results, but these issues ultimately still persist. In the future, we would try to collect even more data to improve the dataset even further to mitigate this issue. Below is a video of the model's annotations of the seafloor video: 
 
 Here are the training graphics for our model:
-<img width="468" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/83b158eb-00c6-482c-b53d-faf556c0df09">
 
-Here is a ground truth labels (left) v. model predictions image for one batch of images:
-<img width="468" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/a02d8e4e-e1e6-4106-a748-3d58c9ef8da2">
+<img width="1211" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/effbfb04-3d84-4400-ab65-d1f5d4e9d597">
+
+Here is a ground truth labels (left) v. model predictions (right) image for one batch of images:
+
+<img width="1365" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/569768ab-e062-45c1-bdaf-6afeb0d6e9f7">
 
 Finally, here is a confusion matrix showing accuracy between classes:
-<img width="361" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/ced78e43-b663-40de-ae48-ec1b5571c8a8">
+
+<img width="984" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/b77ae112-eb45-4748-b349-82094609ca04">
 
 ## Limitations and Extensions
 Our model mislabels a lot of classes as cnidaria due to the imbalance of that class in our dataset. When finding data to add to our dataset, as well as in our dataset initially, there was an abundance of this class. 
