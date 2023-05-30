@@ -28,15 +28,20 @@ The classes that our project identifies are summarized below:
 | Vertebrates: Fishes | Cartilaginous, bony, and jawless fishes |
 | Unidentified Biology | Unidentified Biology |
 
-We based our dataset off last year's deepsea-detector project's dataset. We ended up adding a lot of images since at first, our model would label almost everything as fish. This was because of the large concentration of the species in the previous dataset. We added images from the [World Register of Marine Species](www.marinespecies.org), and had to relabel some of their annotations using Robolfow. 
+We based our dataset on last year's deepsea-detector project's dataset. We ended up adding a lot of images since at first, our model would label almost everything as fish. This was because of the large concentration of the species in the previous dataset. We added images from the [World Register of Marine Species](www.marinespecies.org), and had to relabel some of their annotations using Robolfow. 
 Our model was overfitting for a while during our training iterations, and would still label almost everything as fish or arthopods, but we were able to solve this issue by tweaking some training parameters, as discussed in the next section.
 
 ## Object Detection Model 
 Our project uses a Yolov5 object detection model due to its popularity in the CV field and accuracy. We decided to train a pre-trained yolov5 model from FathomNet, specifically the [MBARI Monterey Bay Benthic YOLOv5x model](https://zenodo.org/record/5539915). This was because of the relatively small size of our dataset compared to those of other similar objectives, so we wanted to leverage the fact that the weights of the base model would already be tuned to detect underwater organisims. 
 
-The most accurate model we produced (located in the iterations folder of our project) was the result of us freezing (keeping the weights of) 18 layers of the MBARI model, and training the rest of the layers with our data. It was important to find a good balance of layers to freeze and unfreeze, since unfreezing all of the layers could detract from accuracy since we would have abandonded the weights from the MBARI model. On the flip side, unfreezing less layers would allow our dataset to create less of an impact on the model's weights.
+The most accurate model we produced (located in the iterations folder of our project) was the result of us freezing (keeping the weights of) 16 layers of the MBARI model, and training the rest of the layers with our data. It was important to find a good balance of layers to freeze and unfreeze, since unfreezing all of the layers could detract from accuracy since we would have abandonded the weights from the MBARI model. On the flip side, unfreezing less layers would allow our dataset to create less of an impact on the model's weights. This value, like most other training specs, was obtained via experimentation. Our final training specs are as follows: 
 
-Our model was trained for 14 epochs, and all of our training specs are available in our [Model Training Colab Notebook](https://github.com/srihariKrishnaswamy/ML-Challenge/blob/main/notebooks/SeaScout_Model_Train.ipynb). 
+| Spec | Value |
+| -------- | -------- |
+| Batch Size | 20 |
+| Frozen Layers | 16 |
+| Image Size | 640 |
+| Epochs | 12 |
 
 As mentioned, we faced some issues with overfitting while trying to find the optimal model with our dataset, but this was mitigated mainly by changing our number of epochs in training. We strived to create the most accurate model we could with the data we could find, but there are still some inconsistencies with the model's accuracy. Regardless, we still hold that it provides value with its detections and labels. 
 
@@ -57,19 +62,19 @@ Processed video files will also be available in the same folder.
 ## Results
 Our model performs well with detecting organisims, but generally struggles in classifying them correctly. Lots of iteration and experimentation in model training led to us developing more optimal training specs to get better results, but these issues ultimately still persist. In the future, we would try to collect even more data to improve the dataset even further to mitigate this issue. Below is a video of the model's annotations of the seafloor video: 
 
-Here are the training loss graphics for our model: 
-
-![image](https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/7623de78-5be0-4c40-95ca-2dc8e82387e0)
+Here are the training graphics for our model:
+<img width="468" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/83b158eb-00c6-482c-b53d-faf556c0df09">
 
 Here is a ground truth labels (left) v. model predictions image for one batch of images:
-
-<img width="1230" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/2358f6f9-5b92-4b7c-ac84-0978f1434afb">
+<img width="468" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/a02d8e4e-e1e6-4106-a748-3d58c9ef8da2">
 
 Finally, here is a confusion matrix showing accuracy between classes:
-![image](https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/baf2c2d3-f16a-4c5d-ad9e-18466f1205d2)
+<img width="361" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/ced78e43-b663-40de-ae48-ec1b5571c8a8">
 
 ## Limitations and Extensions
-One reason for the model's innacuracy was the sheer amount of diversity present in each class. Multiple organisims that look very different were part of the same categories, something that would directly detract from model accuracy. 
+Our model mislabels a lot of classes as cnidaria due to the imbalance of that class in our dataset. When finding data to add to our dataset, as well as in our dataset initially, there was an abundance of this class. 
+
+One other reason for the model's inaccuracy was the sheer amount of diversity present in each class. Multiple organisms that look very different were part of the same categories, something that would directly detract from model accuracy. 
 
 Of course, with more time, we would expand our dataset even further, however it is worth noting that annotating images by and finding correctly annotated images is still difficult. 
 
