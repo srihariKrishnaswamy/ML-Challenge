@@ -34,14 +34,14 @@ Our model was overfitting for a while during our training iterations, and would 
 ## Object Detection Model 
 Our project uses a Yolov5 object detection model due to its popularity in the CV field and accuracy. We decided to train a pre-trained yolov5 model from FathomNet, specifically the MBARI Monterey Bay Benthic YOLOv5x model. This was because of the relatively small size of our dataset compared to those of other similar objectives, so we wanted to leverage the fact that the weights of the base model would already be tuned to detect underwater organisms. 
 
-The most accurate model we produced (located in the iterations folder of our project) was the result of us freezing (keeping the weights of) 16 layers of the MBARI model and training the rest of the layers with our data. It was important to find a good balance of layers to freeze and unfreeze, since unfreezing all the layers could detract from accuracy since we would have abandoned the weights from the MBARI model. On the flip side, unfreezing less layers would allow our dataset to create less of an impact on the model's weights. In addition to freezing and unfreezing layers, there were other key decisions we made in the training specs of our model. Due to initially low batch size (we started at 24), we saw that the model was overfitting drastically, so we iteratively increased batch size to 48 to mitigate this issue. Additionally, we started off by training over 24 epochs, but quickly realized that our training results were not improving much after around the 12th epoch (this also likely contributed to overfitting), so we iteratively adjusted the number until we landed on 12. 
+The most accurate model we produced (located in the iterations folder of our project) was the result of us freezing (keeping the weights of) 18 layers of the MBARI model and training the rest of the layers with our data. It was important to find a good balance of layers to freeze and unfreeze, since unfreezing all the layers could detract from accuracy since we would have abandoned the weights from the MBARI model. On the flip side, unfreezing less layers would allow our dataset to create less of an impact on the model's weights. In addition to freezing and unfreezing layers, there were other key decisions we made in the training specs of our model. Due to initially low batch size (we started at 24), we saw that the model was overfitting drastically, so we iteratively increased batch size to 48 to mitigate this issue. Additionally, we started off by training over 24 epochs, but quickly realized that our training results were not improving much after around the 12th epoch (this also likely contributed to overfitting), so we iteratively adjusted the number until we landed on 12. 
 
 We strived to create the most accurate model we could with the data we could find, but there are still some inconsistencies with the model's accuracy. Regardless, we still hold that it provides value with its detections and labels. Our final training specs are available below:
 
 | Spec | Value |
 | -------- | -------- |
 | Batch Size | 48 |
-| Frozen Layers | 16 |
+| Frozen Layers | 18 |
 | Image Size | 640 |
 | Epochs | 12 |
 
