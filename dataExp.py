@@ -5,7 +5,7 @@ import openpyxl
 
 first_output_file = 'raw_output.txt'
 second_output_file = 'processed_output_1.txt'
-classes = ['annelida', 'arthropoda', 'cnidaria', 'echinodermata', 'fish', 'mollusca', 'other-invertebrates', 'porifera', 'unidentified-biology']
+classes = ['Annelids', 'Arthropods', 'Cnidarians', 'Echinoderms', 'fish', 'Mollusca', 'other-invertebrates', 'Porifera', 'unidentified-biology']
 sourceVid = ""
 excelName = "detections.xlsx"
 worksheetName = "detections_wksht"
@@ -23,10 +23,17 @@ def fixFormat(): # need to call this at the end to shift all cells up one row, b
   newBook = xlsxwriter.Workbook(excelName)
   newWorksheet = newBook.add_worksheet(worksheetName)
   bold = newBook.add_format({'bold': True})
-  for index, entry in enumerate(newData):
+  for index, entry in enumerate(newData): #making necesary augmentations (the replaced classes needed to be one token long before excel)
+        if entry["class"] == classes[4]:
+            newWorksheet.write(index, 2, "Vertebrates: Fishes")
+        elif entry["class"] == classes[6]:
+            newWorksheet.write(index, 2, "Other Invertebrates")
+        elif entry["class"] == classes[8]:
+            newWorksheet.write(index, 2, "Unidentified Biology")
+        else:
+            newWorksheet.write(index, 2, entry["class"])
         newWorksheet.write(index, 0, entry["vid"])
         newWorksheet.write(index, 1, entry["frame"])
-        newWorksheet.write(index, 2, entry["class"])
         newWorksheet.write(index, 3, entry["x_left"])
         newWorksheet.write(index, 4, entry["x_right"])
         newWorksheet.write(index, 5, entry["y_up"])
