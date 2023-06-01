@@ -32,18 +32,18 @@ We based our dataset on last year's deepsea-detector project's dataset. We ended
 Our model was overfitting for a while during our training iterations, and would still label almost everything as fish or arthopods, but we were able to solve this issue by tweaking some training parameters, as discussed in the next section.
 
 ## Object Detection Model 
-Our project uses a Yolov5 object detection model due to its popularity in the CV field and accuracy. We decided to train a pre-trained yolov5 model from FathomNet, specifically the [MBARI Monterey Bay Benthic YOLOv5x model](https://zenodo.org/record/5539915). This was because of the relatively small size of our dataset compared to those of other similar objectives, so we wanted to leverage the fact that the weights of the base model would already be tuned to detect underwater organisims. 
+Our project uses a Yolov5 object detection model due to its popularity in the CV field and accuracy. We decided to train a pre-trained yolov5 model from FathomNet, specifically the MBARI Monterey Bay Benthic YOLOv5x model. This was because of the relatively small size of our dataset compared to those of other similar objectives, so we wanted to leverage the fact that the weights of the base model would already be tuned to detect underwater organisms. 
 
-The most accurate model we produced (located in the iterations folder of our project) was the result of us freezing (keeping the weights of) 16 layers of the MBARI model, and training the rest of the layers with our data. It was important to find a good balance of layers to freeze and unfreeze, since unfreezing all of the layers could detract from accuracy since we would have abandonded the weights from the MBARI model. On the flip side, unfreezing less layers would allow our dataset to create less of an impact on the model's weights. This value, like most other training specs, was obtained via experimentation. Our final training specs are as follows: 
+The most accurate model we produced (located in the iterations folder of our project) was the result of us freezing (keeping the weights of) 16 layers of the MBARI model and training the rest of the layers with our data. It was important to find a good balance of layers to freeze and unfreeze, since unfreezing all the layers could detract from accuracy since we would have abandoned the weights from the MBARI model. On the flip side, unfreezing less layers would allow our dataset to create less of an impact on the model's weights. In addition to freezing and unfreezing layers, there were other key decisions we made in the training specs of our model. Due to initially low batch size (we started at 24), we saw that the model was overfitting drastically, so we iteratively increased batch size to 48 to mitigate this issue. Additionally, we started off by training over 24 epochs, but quickly realized that our training results were not improving much after around the 12th epoch (this also likely contributed to overfitting), so we iteratively adjusted the number until we landed on 14. 
+
+We strived to create the most accurate model we could with the data we could find, but there are still some inconsistencies with the model's accuracy. Regardless, we still hold that it provides value with its detections and labels. Our final training specs are available below:
 
 | Spec | Value |
 | -------- | -------- |
-| Batch Size | 20 |
+| Batch Size | 48 |
 | Frozen Layers | 16 |
 | Image Size | 640 |
-| Epochs | 12 |
-
-As mentioned, we faced some issues with overfitting while trying to find the optimal model with our dataset, but this was mitigated mainly by changing our number of epochs in training. We strived to create the most accurate model we could with the data we could find, but there are still some inconsistencies with the model's accuracy. Regardless, we still hold that it provides value with its detections and labels. 
+| Epochs | 14 |
 
 ## UI Description
 The UI for SeaScout was written with Tkinter. The UI for our project allows the user to enter multiple videos to process and logs the results for the detections for each video on one spreadsheet. After a sequence of videos are processed, the processed videos with bounding boxes are available in the latest folder in the output folder, along with the spreadsheet. The user can cancel video processing at any time, but if this is done, no spreadsheet or videos with bounding boxes will be generated. It is worth noting that the same detection and logging process can be run via the Terminal/CLI, and that the UI is simply a wrapper for this.
@@ -64,11 +64,11 @@ Our model performs well with detecting organisims, but generally struggles in cl
 
 Here are the training graphics for our model:
 
-<img width="1211" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/effbfb04-3d84-4400-ab65-d1f5d4e9d597">
+<img width="1204" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/4923e5e7-8a53-4bad-89bd-7d0daeaa882e">
 
 Here is a ground truth labels (left) v. model predictions (right) image for one batch of images:
 
-<img width="1365" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/569768ab-e062-45c1-bdaf-6afeb0d6e9f7">
+<img width="1289" alt="image" src="https://github.com/srihariKrishnaswamy/ML-Challenge/assets/86600946/c9b00520-f376-4e8a-ab9b-76816be9912b">
 
 Finally, here is a confusion matrix showing accuracy between classes:
 
@@ -79,19 +79,17 @@ Our model mislabels a lot of classes as cnidaria due to the imbalance of that cl
 
 One other reason for the model's inaccuracy was the sheer amount of diversity present in each class. Multiple organisms that look very different were part of the same categories, something that would directly detract from model accuracy. 
 
-Of course, with more time, we would expand our dataset even further, however it is worth noting that annotating images by and finding correctly annotated images is still difficult. 
+Of course, with more time, we would expand our dataset even further, however it is worth noting that annotating images by and finding correctly annotated images is still difficult.
 
 ## [Video Demo and Explaination](https://drive.google.com/file/d/1msMNRon4GlisfqJy3pbMHG69lDG3-QTw/view?usp=sharing)
 
-## Ackowledgements and Resources
+## Ackowledgements
 We would like to thank MATE and NOAA Ocean Exploration for hosting the ML Challenge. We would also like to thank FathomNet and NOAA Ocean Exploration for providing data. Additionally, we would also like to thank Peyton Lee and the team from last year's UWROV deepsea-detector project for advice, providing their dataset for us to build on. In this year's project, we used a similar structure to them for documentation and the notebook to train our model, as well as the code for showing standard output to the UI.
 
 Additionally, we want to ackolwledge our use of Ultralytics Yolov5. The detection.py script is sourced from the [Yolov5 repository](https://github.com/ultralytics/yolov5) and the other python files in the project's subfolders are from the repository as well (these are all dependencies of detect.py).
 
+## Citations
 Jocher, Glenn. "yolov5." GitHub, 2023, https://github.com/ultralytics/yolov5
-
+Lee, Peyton, and Nagvekar, Neha. "DeepSEA Detect - Mate 2022 ML Challenge Dataset." Roboflow, 2022, app.roboflow.com/uwrov-2022-ml-challenge/deepsea-detect--mate-2022-ml-challenge/8.
 ShrimpCryptid. "deepsea-detector." GitHub, https://github.com/ShrimpCryptid/deepsea-detector
-
 "The Main Differences Between Arthropods and Cnidarians." Biobubble Pets, https://biobubblepets.com/the-main-differences-between-arthropods-and-cnidarians
-
-
