@@ -7,7 +7,7 @@ Developed by Srihari Krishnaswamy and Vivian Wang, part of the Underwater Remote
 ### Project Overview
 SeaScout uses a Yolov5 object detection model for detections and classifications. Specifically, training was done based on the [MBARI Monterey Bay Benthic Object Detector](https://zenodo.org/record/5539915), also found in FathomNet's [Model Zoo](https://github.com/fathomnet/models).
 In Training, some layers of the Neural Network were left frozen, but enough layers were unfrozen to get optimal model performance. The model was trained on data from last year's [Deepsea-Detector](https://github.com/ShrimpCryptid/deepsea-detector) project, but the dataset was expanded to include more data from [Fathomnet](https://fathomnet.org/fathomnet/#/).
-The training data for our model can be found in our [Roboflow](https://app.roboflow.com/uwrov-2023-ml-challenge/) project.
+The training data for our model can be found in our [Roboflow](https://universe.roboflow.com/uwrov-2023-ml-challenge/2023-mate-ml-challenge) project.
 
 ### Getting Started
 #### Downloading the Project
