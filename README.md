@@ -42,7 +42,7 @@ Just as in the UI, the entered videos and model must be valid and in the videos 
 since the file SeaScout.pt is in the iterations folder, and each of the .mp4 files are in the videos folder.
 
 ### Resources:
-Dataset: [Roboflow project](https://app.roboflow.com/uwrov-2023-ml-challenge/)
+Dataset: [Roboflow project](https://universe.roboflow.com/uwrov-2023-ml-challenge/2023-mate-ml-challenge)
 
 Model Training Notebook: [Colab Notebook](https://github.com/srihariKrishnaswamy/ML-Challenge/blob/main/notebooks/SeaScout_Model_Train.ipynb)
 
@@ -51,4 +51,4 @@ Additional in-Depth Documentation: [Documentation](https://github.com/srihariKri
 We would like to thank the following people and organizations: 
 - [MATE](https://materovcompetition.org/) and [NOAA Ocean Exploration](https://oceanexplorer.noaa.gov/) for hosting this competition
 - The [World Register of Marine Species (WoRMS)](https://www.marinespecies.org/), [Fathomnet](https://fathomnet.org/fathomnet/#/) and [NOAA Ocean Exploration](https://oceanexplorer.noaa.gov/) for providing additional data
-- Peyton Lee and last year's [Deepsea-Detector](https://github.com/ShrimpCryptid/deepsea-detector) project for advice and a large portion of our dataset
+- Peyton Lee, Neha Nagvekar and last year's [Deepsea-Detector](https://github.com/ShrimpCryptid/deepsea-detector) project for advice and a large portion of our dataset
