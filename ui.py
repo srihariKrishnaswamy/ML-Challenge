@@ -30,7 +30,7 @@ class GUI:
         self.entered_vids = []
         self.detection_logging_process = None
         #tk vars
-        self.model_name = "SeaScout.pt"
+        self.model_name = "SeaScout.pt" #the default model name, can be changed in ui
         self.root = tk.Tk()
         self.root.title("SeaScout Organisim Detector")
         self.root.geometry(str(min_width) + "x" + str(min_height))
