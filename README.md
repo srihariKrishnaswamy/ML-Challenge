@@ -43,9 +43,7 @@ since the file SeaScout.pt is in the iterations folder, and each of the .mp4 fil
 
 ### Resources:
 Dataset: [Roboflow project](https://universe.roboflow.com/uwrov-2023-ml-challenge/2023-mate-ml-challenge)
-
 Model Training Notebook: [Colab Notebook](https://github.com/srihariKrishnaswamy/ML-Challenge/blob/main/notebooks/SeaScout_Model_Train.ipynb)
-
 Additional in-Depth Documentation: [Documentation](https://github.com/srihariKrishnaswamy/ML-Challenge/blob/main/documentation/Documentation.md)
 ### Acknowledgements: 
 We would like to thank the following people and organizations: 
