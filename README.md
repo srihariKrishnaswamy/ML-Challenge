@@ -51,4 +51,3 @@ Additional in-Depth Documentation: [Documentation](https://github.com/srihariKri
 We would like to thank the following people and organizations: 
 - [MATE](https://materovcompetition.org/) and [NOAA Ocean Exploration](https://oceanexplorer.noaa.gov/) for hosting this competition
 - The [World Register of Marine Species (WoRMS)](https://www.marinespecies.org/), [Fathomnet](https://fathomnet.org/fathomnet/#/) and [NOAA Ocean Exploration](https://oceanexplorer.noaa.gov/) for providing additional data
-- Peyton Lee, Neha Nagvekar and last year's [Deepsea-Detector](https://github.com/ShrimpCryptid/deepsea-detector) project for advice and a large portion of our dataset
