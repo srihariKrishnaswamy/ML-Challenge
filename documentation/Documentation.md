@@ -91,8 +91,4 @@ Additionally, we want to ackolwledge our use of Ultralytics Yolov5. The detectio
 ## Citations
 Jocher, Glenn. "yolov5." GitHub, 2023, https://github.com/ultralytics/yolov5
 
-Lee, Peyton, and Nagvekar, Neha. "DeepSEA Detect - Mate 2022 ML Challenge Dataset." Roboflow, 2022, app.roboflow.com/uwrov-2022-ml-challenge/deepsea-detect--mate-2022-ml-challenge/8.
-
-ShrimpCryptid. "deepsea-detector." GitHub, https://github.com/ShrimpCryptid/deepsea-detector
-
 "The Main Differences Between Arthropods and Cnidarians." Biobubble Pets, https://biobubblepets.com/the-main-differences-between-arthropods-and-cnidarians
